@@ -52,6 +52,16 @@
             <artifactId>kmg-fund</artifactId>
             <version>0.1.1</version>
         </dependency>
+        <dependency>
+            <groupId>kmg.javafx</groupId>
+            <artifactId>kmg-javafx</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>kmg.tool.base</groupId>
+            <artifactId>kmg-tool-base</artifactId>
+            <version>0.1.0</version>
+        </dependency>
 
         <!-- Spring -->
         <dependency>
