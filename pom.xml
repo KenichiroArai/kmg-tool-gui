@@ -233,6 +233,11 @@
             <name>GitHub KenichiroArai Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/KenichiroArai/kmg-javafx</url>
         </repository>
+        <repository>
+            <id>github-kmg-tool-base</id>
+            <name>GitHub KenichiroArai Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/KenichiroArai/kmg-tool-base</url>
+        </repository>
     </repositories>
 
     <distributionManagement>
