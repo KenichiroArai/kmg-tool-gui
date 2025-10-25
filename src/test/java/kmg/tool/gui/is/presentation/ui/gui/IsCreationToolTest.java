@@ -51,6 +51,13 @@ import kmg.tool.gui.is.presentation.ui.gui.controller.IsCreationController;
 public class IsCreationToolTest extends ApplicationTest {
 
     /**
+     * FXML_PATH 定数
+     *
+     * @since 0.1.0
+     */
+    private static final String FXML_PATH = "/kmg/tool/gui/is/presentation/ui/gui/controller/IsCreationScreenGui.fxml";
+
+    /**
      * テスト対象
      *
      * @since 0.1.0
@@ -345,7 +352,7 @@ public class IsCreationToolTest extends ApplicationTest {
     public void testGetResource_normalSuccess() {
 
         /* 期待値の定義 */
-        final String expectedPath = "/kmg/tool/application/ui/gui/IsCreationScreenGui.fxml";
+        final String expectedPath = IsCreationToolTest.FXML_PATH;
 
         /* 準備 */
         final IsCreationTool localTestTarget = new IsCreationTool();
@@ -1055,8 +1062,7 @@ public class IsCreationToolTest extends ApplicationTest {
         localReflectionModel.set("messageSource", this.mockMessageSource);
 
         // FXMLファイルが存在することを確認
-        final URL fxmlUrl
-            = localTestTarget.getClass().getResource("/kmg/tool/application/ui/gui/IsCreationScreenGui.fxml");
+        final URL fxmlUrl = localTestTarget.getClass().getResource(IsCreationToolTest.FXML_PATH);
         Assertions.assertNotNull(fxmlUrl, "FXMLファイルが存在すること");
 
         // springContextのgetBeanメソッドをモックして、コントローラークラスを返すようにする
@@ -1118,8 +1124,7 @@ public class IsCreationToolTest extends ApplicationTest {
         localReflectionModel.set("messageSource", this.mockMessageSource);
 
         // FXMLファイルが存在することを確認
-        final URL fxmlUrl
-            = localTestTarget.getClass().getResource("/kmg/tool/application/ui/gui/IsCreationScreenGui.fxml");
+        final URL fxmlUrl = localTestTarget.getClass().getResource(IsCreationToolTest.FXML_PATH);
         Assertions.assertNotNull(fxmlUrl, "FXMLファイルが存在すること");
 
         // springContextのgetBeanメソッドをモックして、コントローラークラスを返すようにする
