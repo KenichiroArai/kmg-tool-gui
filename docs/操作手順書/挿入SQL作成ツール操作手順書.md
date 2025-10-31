@@ -17,17 +17,12 @@
 ### 2.1 ディレクトリ構造
 
 ```text
-kmg-tool/
-├── src/main/java/kmg/tool/is/                    # 挿入SQL作成ツール本体
-│   ├── presentation/ui/gui/
-│   │   ├── IsCreationTool.java                   # メインクラス（エントリポイント）
-│   │   └── controller/
-│   │       └── IsCreationController.java         # GUIコントローラ
-│   ├── application/service/
-│   │   ├── IsCreationService.java                # サービスインタフェース
-│   │   ├── IsFileCreationService.java            # ファイル処理サービス
-│   │   └── impl/                                 # サービス実装
-│   └── application/logic/                        # ビジネスロジック
+kmg-tool-gui/
+├── src/main/java/kmg/tool/gui/is/               # 挿入SQL作成ツール本体
+│   └── presentation/ui/gui/
+│       ├── IsCreationTool.java                   # メインクラス（エントリポイント）
+│       └── controller/
+│           └── IsCreationController.java         # GUIコントローラ
 └── src/main/resources/
     └── kmg/tool/application/ui/gui/
         └── IsCreationScreenGui.fxml              # GUI画面定義
@@ -114,10 +109,10 @@ USER002 | 佐藤花子 | 2024-01-02 11:00:00
 
    ```bash
    # Mavenを使用して実行
-   mvn exec:java -Dexec.mainClass="kmg.tool.is.presentation.ui.gui.IsCreationTool"
+   mvn exec:java -Dexec.mainClass="kmg.tool.gui.is.presentation.ui.gui.IsCreationTool"
 
    # または、JARファイルから実行
-   java -cp target/classes:target/dependency/* kmg.tool.is.presentation.ui.gui.IsCreationTool
+   java -cp target/classes:target/dependency/* kmg.tool.gui.is.presentation.ui.gui.IsCreationTool
    ```
 
 2. **GUI 画面での操作**
