@@ -57,13 +57,6 @@ public class IsCreationController implements Initializable {
     private static final String DIRECTORY_CHOOSER_TITLE = "ディレクトリ選択"; //$NON-NLS-1$
 
     /**
-     * デフォルトのディレクトリパス
-     *
-     * @since 0.1.0
-     */
-    private static final String DEFAULT_DIRECTORY_PATH = "c:/"; //$NON-NLS-1$
-
-    /**
      * ロガー
      *
      * @since 0.1.0
@@ -279,7 +272,7 @@ public class IsCreationController implements Initializable {
 
         if (KmgString.isEmpty(defaultFilePath)) {
 
-            defaultFilePath = IsCreationController.DEFAULT_DIRECTORY_PATH;
+            defaultFilePath = System.getProperty("user.home");
 
         }
         File defaultFile = new File(defaultFilePath);
@@ -289,7 +282,13 @@ public class IsCreationController implements Initializable {
             defaultFile = defaultFile.getParentFile();
 
         }
-        this.fileChooserWrapper.setInitialDirectory(defaultFile);
+
+        // ディレクトリが存在し、かつディレクトリである場合のみ設定
+        if (defaultFile != null && defaultFile.exists() && defaultFile.isDirectory()) {
+
+            this.fileChooserWrapper.setInitialDirectory(defaultFile);
+
+        }
         final File file = this.fileChooserWrapper.showOpenDialog(null);
 
         if (file != null) {
@@ -316,7 +315,7 @@ public class IsCreationController implements Initializable {
 
         if (KmgString.isEmpty(defaultFilePath)) {
 
-            defaultFilePath = IsCreationController.DEFAULT_DIRECTORY_PATH;
+            defaultFilePath = System.getProperty("user.home");
 
         }
         File defaultFile = new File(defaultFilePath);
@@ -326,7 +325,13 @@ public class IsCreationController implements Initializable {
             defaultFile = defaultFile.getParentFile();
 
         }
-        this.directoryChooserWrapper.setInitialDirectory(defaultFile);
+
+        // ディレクトリが存在し、かつディレクトリである場合のみ設定
+        if (defaultFile != null && defaultFile.exists() && defaultFile.isDirectory()) {
+
+            this.directoryChooserWrapper.setInitialDirectory(defaultFile);
+
+        }
         final File file = this.directoryChooserWrapper.showDialog(null);
 
         if (file != null) {

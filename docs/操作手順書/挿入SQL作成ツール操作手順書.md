@@ -24,7 +24,7 @@ kmg-tool-gui/
 │       └── controller/
 │           └── IsCreationController.java         # GUIコントローラ
 └── src/main/resources/
-    └── kmg/tool/application/ui/gui/
+    └── kmg/tool/gui/is/presentation/ui/gui/controller/
         └── IsCreationScreenGui.fxml              # GUI画面定義
 ```
 

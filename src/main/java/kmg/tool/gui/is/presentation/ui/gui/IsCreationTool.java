@@ -5,7 +5,6 @@ import java.net.URL;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -61,7 +60,6 @@ public class IsCreationTool extends Application {
      *
      * @since 0.1.0
      */
-    @Autowired
     private KmgMessageSource messageSource;
 
     /**
@@ -120,6 +118,7 @@ public class IsCreationTool extends Application {
     public void init() {
 
         this.springContext = new SpringApplicationBuilder(IsCreationTool.class).run();
+        this.messageSource = this.springContext.getBean(KmgMessageSource.class);
 
     }
 
@@ -136,7 +135,18 @@ public class IsCreationTool extends Application {
 
         stage.setTitle(IsCreationTool.STAGE_TITLE);
 
-        final URL        url  = this.getClass().getResource(IsCreationTool.FXML_PATH);
+        final URL url = this.getClass().getResource(IsCreationTool.FXML_PATH);
+        if (url == null) {
+
+            // ログの出力
+            final KmgToolLogMsgTypes logType     = KmgToolLogMsgTypes.KMGTOOL_LOG10002;
+            final Object[]           messageArgs = {};
+            final String             msg         = this.messageSource.getLogMessage(logType, messageArgs);
+            this.logger.error(msg + " - FXML file not found: " + IsCreationTool.FXML_PATH); //$NON-NLS-1$
+            return;
+
+        }
+
         final FXMLLoader fxml = new FXMLLoader(url);
         fxml.setControllerFactory(this.springContext::getBean);
         AnchorPane root;

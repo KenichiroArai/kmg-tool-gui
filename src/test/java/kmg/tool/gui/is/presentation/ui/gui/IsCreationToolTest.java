@@ -55,7 +55,7 @@ public class IsCreationToolTest extends ApplicationTest {
      *
      * @since 0.1.0
      */
-    private static final String FXML_PATH = "/kmg/tool/gui/is/presentation/ui/gui/controller/IsCreationScreenGui.fxml";
+    private static final String FXML_PATH = "/kmg/tool/application/ui/gui/IsCreationScreenGui.fxml";
 
     /**
      * テスト対象

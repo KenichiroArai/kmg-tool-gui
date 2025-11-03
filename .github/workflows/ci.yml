@@ -69,9 +69,17 @@ jobs:
 
       - name: Check Test Coverage
         run: |
-          COVERAGE=$(mvn jacoco:report | grep -A 1 "Total.*class" | grep "[0-9]\{1,3\}%" | grep -o "[0-9]\{1,3\}%" | cut -d'%' -f1)
-          if [ "$COVERAGE" -lt 100 ]; then
-            echo "Test coverage is below 100%. Current coverage: $COVERAGE%"
+          mvn jacoco:report > jacoco-output.tmp 2>&1
+          grep -oE '[0-9]{1,3}%' jacoco-output.tmp | sed 's/%//' > percentages.tmp
+          FAILED=0
+          while IFS= read -r PCT; do
+            if [ "$PCT" -ne 100 ]; then
+              echo "Test coverage is below 100%. Found coverage: $PCT%"
+              FAILED=1
+            fi
+          done < percentages.tmp
+          rm -f jacoco-output.tmp percentages.tmp
+          if [ "$FAILED" -eq 1 ]; then
             exit 1
           else
             echo "Test coverage is 100%"
