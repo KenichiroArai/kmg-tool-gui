@@ -46,7 +46,7 @@ public class IsCreationTool extends Application {
      *
      * @since 0.1.0
      */
-    private static final String FXML_PATH = "/kmg/tool/application/ui/gui/IsCreationScreenGui.fxml"; //$NON-NLS-1$
+    private static final String FXML_PATH = "/kmg/tool/gui/is/presentation/ui/gui/controller/IsCreationScreenGui.fxml"; //$NON-NLS-1$
 
     /**
      * ロガー
