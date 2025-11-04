@@ -365,6 +365,9 @@ public class IsCreationControllerTest extends AbstractKmgTest {
 
     /**
      * DEFAULT_DIRECTORY_PATH 定数のテスト - 正常系：定数が正しく定義されている場合
+     * <p>
+     * 注：この定数はIsCreationControllerから削除されたため、このテストは無効化されています。
+     * </p>
      *
      * @since 0.1.0
      *
@@ -372,6 +375,7 @@ public class IsCreationControllerTest extends AbstractKmgTest {
      *                   例外
      */
     @Test
+    @Disabled("DEFAULT_DIRECTORY_PATH定数はIsCreationControllerに存在しないため無効化")
     public void testDEFAULT_DIRECTORY_PATH_normalBasic() throws Exception {
 
         /* 期待値の定義 */
