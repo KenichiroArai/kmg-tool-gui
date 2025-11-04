@@ -56,7 +56,7 @@ jobs:
           EOF
 
       - name: Build with Maven
-        run: mvn -B package --file pom.xml
+        run: mvn -B package --file pom.xml -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw -Dprism.text=t2k -Djava.awt.headless=true
 
       - name: Generate dependency graph
         run: |
@@ -65,7 +65,7 @@ jobs:
           mvn -B dependency:tree -DoutputType=graphml -DoutputFile=target/dependency-graph.graphml -Dverbose=false
 
       - name: Run tests with JVM options
-        run: mvn test -Djdk.instrument.traceUsage=true -DargLine="-XX:+EnableDynamicAgentLoading"
+        run: mvn test -Djdk.instrument.traceUsage=true -DargLine="-XX:+EnableDynamicAgentLoading" -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw -Dprism.text=t2k -Djava.awt.headless=true
 
       - name: Check Test Coverage
         run: |

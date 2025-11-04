@@ -220,6 +220,14 @@
                     <threadCount>1</threadCount>
                     <forkCount>1</forkCount>
                     <reuseForks>false</reuseForks>
+                    <systemPropertyVariables>
+                        <!-- TestFX headless mode settings -->
+                        <testfx.robot>glass</testfx.robot>
+                        <testfx.headless>true</testfx.headless>
+                        <prism.order>sw</prism.order>
+                        <prism.text>t2k</prism.text>
+                        <java.awt.headless>true</java.awt.headless>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
         </plugins>

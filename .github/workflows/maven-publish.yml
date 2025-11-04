@@ -72,7 +72,7 @@ jobs:
       - name: テストとビルド
         run: |
           echo "Mavenビルドとテストプロセスを開始します..."
-          mvn -B verify --file pom.xml
+          mvn -B verify --file pom.xml -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw -Dprism.text=t2k -Djava.awt.headless=true
           echo "Mavenビルドとテストが完了しました"
 
       # カバレッジレポートのアップロード
