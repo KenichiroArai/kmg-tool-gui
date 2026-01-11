@@ -1,6 +1,5 @@
 package kmg.tool.gui.is.presentation.ui.gui;
 
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -39,7 +38,7 @@ import kmg.tool.gui.is.presentation.ui.gui.controller.IsCreationController;
  *
  * @since 0.1.0
  *
- * @version 0.1.0
+ * @version 0.1.1
  */
 @ExtendWith({
     MockitoExtension.class, ApplicationExtension.class

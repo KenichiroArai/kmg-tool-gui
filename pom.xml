@@ -12,7 +12,7 @@
 
     <groupId>kmg.tool.gui</groupId>
     <artifactId>kmg-tool-gui</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <name>kmg-tool-gui</name>
     <description>KMGツールGUI</description>
     <packaging>jar</packaging>
@@ -31,22 +31,22 @@
         <dependency>
             <groupId>kmg.core</groupId>
             <artifactId>kmg-core</artifactId>
-            <version>0.2.2</version>
+            <version>0.2.5</version>
         </dependency>
         <dependency>
             <groupId>kmg.fund</groupId>
             <artifactId>kmg-fund</artifactId>
-            <version>0.2.1</version>
+            <version>0.2.4</version>
         </dependency>
         <dependency>
             <groupId>kmg.javafx</groupId>
             <artifactId>kmg-javafx</artifactId>
-            <version>0.1.0</version>
+            <version>0.1.1</version>
         </dependency>
         <dependency>
             <groupId>kmg.tool.base</groupId>
             <artifactId>kmg-tool-base</artifactId>
-            <version>0.2.0</version>
+            <version>0.2.3</version>
         </dependency>
 
         <!-- Spring -->

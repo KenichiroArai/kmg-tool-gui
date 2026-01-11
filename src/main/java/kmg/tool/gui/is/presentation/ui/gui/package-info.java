@@ -12,4 +12,3 @@
  * @version 0.1.0
  */
 package kmg.tool.gui.is.presentation.ui.gui;
-
