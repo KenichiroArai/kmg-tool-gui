@@ -51,7 +51,7 @@ import kmg.tool.gui.is.presentation.ui.gui.controller.IsCreationController;
  *
  * @since 0.1.0
  *
- * @version 0.1.0
+ * @version 0.1.1
  */
 @ExtendWith({
     MockitoExtension.class, ApplicationExtension.class
@@ -724,6 +724,84 @@ public class IsCreationControllerTest extends AbstractKmgTest {
     }
 
     /**
+     * onCalcInputFileOpenClicked メソッドのテスト - 正常系：defaultFileが存在しない場合
+     *
+     * @since 0.1.1
+     *
+     * @throws Exception
+     *                   例外
+     */
+    @Test
+    public void testOnCalcInputFileOpenClicked_normalDefaultFileNotExists() throws Exception {
+
+        /* 期待値の定義 */
+        final String expectedFilePath = "C:\\test\\selected.xlsx";
+
+        /* 準備 */
+        final TextField txtInputFile = Mockito.mock(TextField.class);
+        Mockito.when(txtInputFile.getText()).thenReturn("C:\\non_existing_path");
+        this.reflectionModel.set("txtInputFile", txtInputFile);
+
+        final File mockSelectedFile = new File(expectedFilePath);
+        Mockito.when(this.mockFileChooserWrapper.showOpenDialog(ArgumentMatchers.any())).thenReturn(mockSelectedFile);
+
+        /* テスト対象の実行 */
+        final ActionEvent mockEvent = Mockito.mock(ActionEvent.class);
+        final Method      method    = this.testTarget.getClass().getDeclaredMethod("onCalcInputFileOpenClicked",
+            ActionEvent.class);
+        method.setAccessible(true);
+        method.invoke(this.testTarget, mockEvent);
+
+        /* 検証の準備 */
+        // 検証の準備は不要
+
+        /* 検証の実施 */
+        Mockito.verify(this.mockFileChooserWrapper, Mockito.times(1)).setTitle("ファイル選択");
+        Mockito.verify(this.mockFileChooserWrapper, Mockito.times(1)).showOpenDialog(ArgumentMatchers.any());
+        Mockito.verify(txtInputFile, Mockito.times(1)).setText(expectedFilePath);
+
+    }
+
+    /**
+     * onCalcInputFileOpenClicked メソッドのテスト - 正常系：defaultFileがnullの場合
+     *
+     * @since 0.1.1
+     *
+     * @throws Exception
+     *                   例外
+     */
+    @Test
+    public void testOnCalcInputFileOpenClicked_normalDefaultFileNull() throws Exception {
+
+        /* 期待値の定義 */
+        final String expectedFilePath = "C:\\test\\selected.xlsx";
+
+        /* 準備 */
+        final TextField txtInputFile = Mockito.mock(TextField.class);
+        Mockito.when(txtInputFile.getText()).thenReturn("non_existing_path");
+        this.reflectionModel.set("txtInputFile", txtInputFile);
+
+        final File mockSelectedFile = new File(expectedFilePath);
+        Mockito.when(this.mockFileChooserWrapper.showOpenDialog(ArgumentMatchers.any())).thenReturn(mockSelectedFile);
+
+        /* テスト対象の実行 */
+        final ActionEvent mockEvent = Mockito.mock(ActionEvent.class);
+        final Method      method    = this.testTarget.getClass().getDeclaredMethod("onCalcInputFileOpenClicked",
+            ActionEvent.class);
+        method.setAccessible(true);
+        method.invoke(this.testTarget, mockEvent);
+
+        /* 検証の準備 */
+        // 検証の準備は不要
+
+        /* 検証の実施 */
+        Mockito.verify(this.mockFileChooserWrapper, Mockito.times(1)).setTitle("ファイル選択");
+        Mockito.verify(this.mockFileChooserWrapper, Mockito.times(1)).showOpenDialog(ArgumentMatchers.any());
+        Mockito.verify(txtInputFile, Mockito.times(1)).setText(expectedFilePath);
+
+    }
+
+    /**
      * onCalcInputFileOpenClicked メソッドのテスト - 正常系：既存のパスがディレクトリの場合（親ディレクトリが設定されない）
      *
      * @since 0.1.0
@@ -931,6 +1009,86 @@ public class IsCreationControllerTest extends AbstractKmgTest {
             .setInitialDirectory(ArgumentMatchers.any(File.class));
         Mockito.verify(this.mockFileChooserWrapper, Mockito.times(1)).showOpenDialog(ArgumentMatchers.any());
         Mockito.verify(txtInputFile, Mockito.never()).setText(ArgumentMatchers.anyString());
+
+    }
+
+    /**
+     * onCalcOutputDirectoryOpenClicked メソッドのテスト - 正常系：defaultFileが存在しない場合
+     *
+     * @since 0.1.1
+     *
+     * @throws Exception
+     *                   例外
+     */
+    @Test
+    public void testOnCalcOutputDirectoryOpenClicked_normalDefaultFileNotExists() throws Exception {
+
+        /* 期待値の定義 */
+        final String expectedDirectoryPath = "C:\\test\\output";
+
+        /* 準備 */
+        final TextField txtOutputDirectory = Mockito.mock(TextField.class);
+        Mockito.when(txtOutputDirectory.getText()).thenReturn("C:\\non_existing_path");
+        this.reflectionModel.set("txtOutputDirectory", txtOutputDirectory);
+
+        final File mockSelectedDirectory = new File(expectedDirectoryPath);
+        Mockito.when(this.mockDirectoryChooserWrapper.showDialog(ArgumentMatchers.any()))
+            .thenReturn(mockSelectedDirectory);
+
+        /* テスト対象の実行 */
+        final ActionEvent mockEvent = Mockito.mock(ActionEvent.class);
+        final Method      method    = this.testTarget.getClass().getDeclaredMethod("onCalcOutputDirectoryOpenClicked",
+            ActionEvent.class);
+        method.setAccessible(true);
+        method.invoke(this.testTarget, mockEvent);
+
+        /* 検証の準備 */
+        // 検証の準備は不要
+
+        /* 検証の実施 */
+        Mockito.verify(this.mockDirectoryChooserWrapper, Mockito.times(1)).setTitle("ディレクトリ選択");
+        Mockito.verify(this.mockDirectoryChooserWrapper, Mockito.times(1)).showDialog(ArgumentMatchers.any());
+        Mockito.verify(txtOutputDirectory, Mockito.times(1)).setText(expectedDirectoryPath);
+
+    }
+
+    /**
+     * onCalcOutputDirectoryOpenClicked メソッドのテスト - 正常系：defaultFileがnullの場合
+     *
+     * @since 0.1.1
+     *
+     * @throws Exception
+     *                   例外
+     */
+    @Test
+    public void testOnCalcOutputDirectoryOpenClicked_normalDefaultFileNull() throws Exception {
+
+        /* 期待値の定義 */
+        final String expectedDirectoryPath = "C:\\test\\output";
+
+        /* 準備 */
+        final TextField txtOutputDirectory = Mockito.mock(TextField.class);
+        Mockito.when(txtOutputDirectory.getText()).thenReturn("non_existing_path");
+        this.reflectionModel.set("txtOutputDirectory", txtOutputDirectory);
+
+        final File mockSelectedDirectory = new File(expectedDirectoryPath);
+        Mockito.when(this.mockDirectoryChooserWrapper.showDialog(ArgumentMatchers.any()))
+            .thenReturn(mockSelectedDirectory);
+
+        /* テスト対象の実行 */
+        final ActionEvent mockEvent = Mockito.mock(ActionEvent.class);
+        final Method      method    = this.testTarget.getClass().getDeclaredMethod("onCalcOutputDirectoryOpenClicked",
+            ActionEvent.class);
+        method.setAccessible(true);
+        method.invoke(this.testTarget, mockEvent);
+
+        /* 検証の準備 */
+        // 検証の準備は不要
+
+        /* 検証の実施 */
+        Mockito.verify(this.mockDirectoryChooserWrapper, Mockito.times(1)).setTitle("ディレクトリ選択");
+        Mockito.verify(this.mockDirectoryChooserWrapper, Mockito.times(1)).showDialog(ArgumentMatchers.any());
+        Mockito.verify(txtOutputDirectory, Mockito.times(1)).setText(expectedDirectoryPath);
 
     }
 
