@@ -735,14 +735,15 @@ public class IsCreationControllerTest extends AbstractKmgTest {
     public void testOnCalcInputFileOpenClicked_normalDefaultFileNotExists() throws Exception {
 
         /* 期待値の定義 */
-        final String expectedFilePath = "C:\\test\\selected.xlsx";
+        final Path   tempFile         = Files.createTempFile(this.testTempDir, "selected", ".xlsx");
+        final File   mockSelectedFile = tempFile.toFile();
+        final String expectedFilePath = mockSelectedFile.getAbsolutePath();
 
         /* 準備 */
         final TextField txtInputFile = Mockito.mock(TextField.class);
-        Mockito.when(txtInputFile.getText()).thenReturn("C:\\non_existing_path");
+        Mockito.when(txtInputFile.getText()).thenReturn("non_existing_path");
         this.reflectionModel.set("txtInputFile", txtInputFile);
 
-        final File mockSelectedFile = new File(expectedFilePath);
         Mockito.when(this.mockFileChooserWrapper.showOpenDialog(ArgumentMatchers.any())).thenReturn(mockSelectedFile);
 
         /* テスト対象の実行 */
@@ -774,14 +775,15 @@ public class IsCreationControllerTest extends AbstractKmgTest {
     public void testOnCalcInputFileOpenClicked_normalDefaultFileNull() throws Exception {
 
         /* 期待値の定義 */
-        final String expectedFilePath = "C:\\test\\selected.xlsx";
+        final Path   tempFile         = Files.createTempFile(this.testTempDir, "selected", ".xlsx");
+        final File   mockSelectedFile = tempFile.toFile();
+        final String expectedFilePath = mockSelectedFile.getAbsolutePath();
 
         /* 準備 */
         final TextField txtInputFile = Mockito.mock(TextField.class);
         Mockito.when(txtInputFile.getText()).thenReturn("non_existing_path");
         this.reflectionModel.set("txtInputFile", txtInputFile);
 
-        final File mockSelectedFile = new File(expectedFilePath);
         Mockito.when(this.mockFileChooserWrapper.showOpenDialog(ArgumentMatchers.any())).thenReturn(mockSelectedFile);
 
         /* テスト対象の実行 */
@@ -1024,14 +1026,15 @@ public class IsCreationControllerTest extends AbstractKmgTest {
     public void testOnCalcOutputDirectoryOpenClicked_normalDefaultFileNotExists() throws Exception {
 
         /* 期待値の定義 */
-        final String expectedDirectoryPath = "C:\\test\\output";
+        final Path   tempDirectory         = Files.createTempDirectory(this.testTempDir, "output");
+        final File   mockSelectedDirectory = tempDirectory.toFile();
+        final String expectedDirectoryPath = mockSelectedDirectory.getAbsolutePath();
 
         /* 準備 */
         final TextField txtOutputDirectory = Mockito.mock(TextField.class);
-        Mockito.when(txtOutputDirectory.getText()).thenReturn("C:\\non_existing_path");
+        Mockito.when(txtOutputDirectory.getText()).thenReturn("non_existing_path");
         this.reflectionModel.set("txtOutputDirectory", txtOutputDirectory);
 
-        final File mockSelectedDirectory = new File(expectedDirectoryPath);
         Mockito.when(this.mockDirectoryChooserWrapper.showDialog(ArgumentMatchers.any()))
             .thenReturn(mockSelectedDirectory);
 
@@ -1064,14 +1067,15 @@ public class IsCreationControllerTest extends AbstractKmgTest {
     public void testOnCalcOutputDirectoryOpenClicked_normalDefaultFileNull() throws Exception {
 
         /* 期待値の定義 */
-        final String expectedDirectoryPath = "C:\\test\\output";
+        final Path   tempDirectory         = Files.createTempDirectory(this.testTempDir, "output");
+        final File   mockSelectedDirectory = tempDirectory.toFile();
+        final String expectedDirectoryPath = mockSelectedDirectory.getAbsolutePath();
 
         /* 準備 */
         final TextField txtOutputDirectory = Mockito.mock(TextField.class);
         Mockito.when(txtOutputDirectory.getText()).thenReturn("non_existing_path");
         this.reflectionModel.set("txtOutputDirectory", txtOutputDirectory);
 
-        final File mockSelectedDirectory = new File(expectedDirectoryPath);
         Mockito.when(this.mockDirectoryChooserWrapper.showDialog(ArgumentMatchers.any()))
             .thenReturn(mockSelectedDirectory);
 
