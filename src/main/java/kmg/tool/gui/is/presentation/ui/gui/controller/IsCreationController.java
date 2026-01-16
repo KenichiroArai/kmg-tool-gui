@@ -22,8 +22,8 @@ import kmg.core.infrastructure.model.impl.KmgPfaMeasModelImpl;
 import kmg.core.infrastructure.type.KmgString;
 import kmg.fund.infrastructure.context.KmgMessageSource;
 import kmg.tool.base.cmn.infrastructure.exception.KmgToolMsgException;
-import kmg.tool.base.cmn.infrastructure.types.KmgToolLogMsgTypes;
 import kmg.tool.base.is.application.service.IsCreationService;
+import kmg.tool.gui.cmn.infrastructure.types.KmgToolGuiLogMsgTypes;
 import kmg.tool.gui.cmn.presentation.ui.gui.stage.wrapper.DirectoryChooserWrapper;
 import kmg.tool.gui.cmn.presentation.ui.gui.stage.wrapper.FileChooserWrapper;
 
@@ -37,7 +37,7 @@ import kmg.tool.gui.cmn.presentation.ui.gui.stage.wrapper.FileChooserWrapper;
  *
  * @since 0.1.0
  *
- * @version 0.1.0
+ * @version 0.1.1
  */
 @Controller
 public class IsCreationController implements Initializable {
@@ -284,7 +284,7 @@ public class IsCreationController implements Initializable {
         }
 
         // ディレクトリが存在し、かつディレクトリである場合のみ設定
-        if (defaultFile != null && defaultFile.exists() && defaultFile.isDirectory()) {
+        if ((defaultFile != null) && defaultFile.exists() && defaultFile.isDirectory()) {
 
             this.fileChooserWrapper.setInitialDirectory(defaultFile);
 
@@ -327,7 +327,7 @@ public class IsCreationController implements Initializable {
         }
 
         // ディレクトリが存在し、かつディレクトリである場合のみ設定
-        if (defaultFile != null && defaultFile.exists() && defaultFile.isDirectory()) {
+        if ((defaultFile != null) && defaultFile.exists() && defaultFile.isDirectory()) {
 
             this.directoryChooserWrapper.setInitialDirectory(defaultFile);
 
@@ -367,11 +367,11 @@ public class IsCreationController implements Initializable {
         } catch (final KmgToolMsgException e) {
 
             // ログの出力
-            final KmgToolLogMsgTypes logType     = KmgToolLogMsgTypes.KMGTOOL_LOG10001;
-            final Object[]           messageArgs = {
+            final KmgToolGuiLogMsgTypes logType     = KmgToolGuiLogMsgTypes.KMGTOOLGUI_LOG10000;
+            final Object[]              messageArgs = {
                 inputPath, outputPath,
             };
-            final String             msg         = this.messageSource.getLogMessage(logType, messageArgs);
+            final String                msg         = this.messageSource.getLogMessage(logType, messageArgs);
             this.logger.error(msg, e);
 
         } finally {

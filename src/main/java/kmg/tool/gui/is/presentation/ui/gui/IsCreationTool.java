@@ -15,7 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import kmg.fund.infrastructure.context.KmgMessageSource;
-import kmg.tool.base.cmn.infrastructure.types.KmgToolLogMsgTypes;
+import kmg.tool.gui.cmn.infrastructure.types.KmgToolGuiLogMsgTypes;
 
 /**
  * 挿入SQL作成ツール<br>
@@ -27,7 +27,7 @@ import kmg.tool.base.cmn.infrastructure.types.KmgToolLogMsgTypes;
  *
  * @since 0.1.0
  *
- * @version 0.1.0
+ * @version 0.1.1
  */
 @SpringBootApplication(scanBasePackages = {
     "kmg"
@@ -136,13 +136,16 @@ public class IsCreationTool extends Application {
         stage.setTitle(IsCreationTool.STAGE_TITLE);
 
         final URL url = this.getClass().getResource(IsCreationTool.FXML_PATH);
+
         if (url == null) {
 
             // ログの出力
-            final KmgToolLogMsgTypes logType     = KmgToolLogMsgTypes.KMGTOOL_LOG10002;
-            final Object[]           messageArgs = {};
-            final String             msg         = this.messageSource.getLogMessage(logType, messageArgs);
-            this.logger.error(msg + " - FXML file not found: " + IsCreationTool.FXML_PATH); //$NON-NLS-1$
+            final KmgToolGuiLogMsgTypes logType     = KmgToolGuiLogMsgTypes.KMGTOOLGUI_LOG10001;
+            final Object[]              messageArgs = {
+                IsCreationTool.FXML_PATH,
+            };
+            final String                msg         = this.messageSource.getLogMessage(logType, messageArgs);
+            this.logger.error(msg);
             return;
 
         }
@@ -158,9 +161,11 @@ public class IsCreationTool extends Application {
         } catch (final IOException e) {
 
             // ログの出力
-            final KmgToolLogMsgTypes logType     = KmgToolLogMsgTypes.KMGTOOL_LOG10002;
-            final Object[]           messageArgs = {};
-            final String             msg         = this.messageSource.getLogMessage(logType, messageArgs);
+            final KmgToolGuiLogMsgTypes logType     = KmgToolGuiLogMsgTypes.KMGTOOLGUI_LOG10002;
+            final Object[]              messageArgs = {
+                IsCreationTool.FXML_PATH,
+            };
+            final String                msg         = this.messageSource.getLogMessage(logType, messageArgs);
             this.logger.error(msg, e);
             return;
 
