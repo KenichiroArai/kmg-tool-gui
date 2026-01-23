@@ -36,9 +36,9 @@ import kmg.core.infrastructure.model.impl.KmgReflectionModelImpl;
 import kmg.core.infrastructure.test.AbstractKmgTest;
 import kmg.fund.infrastructure.context.KmgMessageSource;
 import kmg.fund.infrastructure.context.SpringApplicationContextHelper;
-import kmg.tool.base.cmn.infrastructure.exception.KmgToolMsgException;
-import kmg.tool.base.cmn.infrastructure.types.KmgToolGenMsgTypes;
-import kmg.tool.base.cmn.infrastructure.types.KmgToolLogMsgTypes;
+import kmg.tool.base.cmn.infrastructure.exception.KmgToolBaseMsgException;
+import kmg.tool.base.cmn.infrastructure.types.KmgToolBaseGenMsgTypes;
+import kmg.tool.base.cmn.infrastructure.types.KmgToolBaseLogMsgTypes;
 import kmg.tool.base.is.application.service.IsCreationService;
 import kmg.tool.gui.cmn.presentation.ui.gui.stage.wrapper.DirectoryChooserWrapper;
 import kmg.tool.gui.cmn.presentation.ui.gui.stage.wrapper.FileChooserWrapper;
@@ -51,7 +51,7 @@ import kmg.tool.gui.is.presentation.ui.gui.controller.IsCreationController;
  *
  * @since 0.1.0
  *
- * @version 0.1.1
+ * @version 0.1.2
  */
 @ExtendWith({
     MockitoExtension.class, ApplicationExtension.class
@@ -611,8 +611,8 @@ public class IsCreationControllerTest extends AbstractKmgTest {
     public void testMainProc_errorKmgToolMsgException() throws Exception {
 
         /* 期待値の定義 */
-        final String             expectedDomainMessage = "[KMGTOOL_GEN08000] ";
-        final KmgToolGenMsgTypes expectedMessageTypes  = KmgToolGenMsgTypes.KMGTOOL_GEN08000;
+        final String                 expectedDomainMessage = "[KMGTOOLBASE_GEN08000] ";
+        final KmgToolBaseGenMsgTypes expectedMessageTypes  = KmgToolBaseGenMsgTypes.KMGTOOLBASE_GEN08000;
 
         /* 準備 */
         final Path inputPath  = this.testInputFile;
@@ -637,15 +637,16 @@ public class IsCreationControllerTest extends AbstractKmgTest {
             Mockito.when(mockMessageSourceTestMethod.getExcMessage(ArgumentMatchers.any(), ArgumentMatchers.any()))
                 .thenReturn(expectedDomainMessage);
 
-            Mockito.doThrow(new KmgToolMsgException(KmgToolGenMsgTypes.KMGTOOL_GEN08000, new Object[] {}))
+            Mockito.doThrow(new KmgToolBaseMsgException(KmgToolBaseGenMsgTypes.KMGTOOLBASE_GEN08000, new Object[] {}))
                 .when(this.mockIsCreationService).outputInsertionSql();
 
             /* テスト対象の実行 */
-            final KmgToolMsgException actualException = Assertions.assertThrows(KmgToolMsgException.class, () -> {
+            final KmgToolBaseMsgException actualException
+                = Assertions.assertThrows(KmgToolBaseMsgException.class, () -> {
 
-                this.testTarget.mainProc(inputPath, outputPath);
+                    this.testTarget.mainProc(inputPath, outputPath);
 
-            }, "KmgToolMsgExceptionが発生すること");
+                }, "KmgToolMsgExceptionが発生すること");
 
             /* 検証の準備 */
             // 検証の準備は不要
@@ -1306,10 +1307,10 @@ public class IsCreationControllerTest extends AbstractKmgTest {
             // モックメッセージソースの設定
             Mockito.when(mockMessageSourceTestMethod.getExcMessage(ArgumentMatchers.any(), ArgumentMatchers.any()))
                 .thenReturn("テスト用の例外メッセージ");
-            Mockito.when(this.mockMessageSource.getLogMessage(ArgumentMatchers.any(KmgToolLogMsgTypes.class),
+            Mockito.when(this.mockMessageSource.getLogMessage(ArgumentMatchers.any(KmgToolBaseLogMsgTypes.class),
                 ArgumentMatchers.any(Object[].class))).thenReturn("テストエラーメッセージ");
 
-            Mockito.doThrow(new KmgToolMsgException(KmgToolGenMsgTypes.KMGTOOL_GEN08000, new Object[] {}))
+            Mockito.doThrow(new KmgToolBaseMsgException(KmgToolBaseGenMsgTypes.KMGTOOLBASE_GEN08000, new Object[] {}))
                 .when(this.mockIsCreationService).outputInsertionSql();
 
             /* テスト対象の実行 */
