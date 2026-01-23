@@ -21,7 +21,7 @@ import kmg.core.infrastructure.model.KmgPfaMeasModel;
 import kmg.core.infrastructure.model.impl.KmgPfaMeasModelImpl;
 import kmg.core.infrastructure.type.KmgString;
 import kmg.fund.infrastructure.context.KmgMessageSource;
-import kmg.tool.base.cmn.infrastructure.exception.KmgToolMsgException;
+import kmg.tool.base.cmn.infrastructure.exception.KmgToolBaseMsgException;
 import kmg.tool.base.is.application.service.IsCreationService;
 import kmg.tool.gui.cmn.infrastructure.types.KmgToolGuiLogMsgTypes;
 import kmg.tool.gui.cmn.presentation.ui.gui.stage.wrapper.DirectoryChooserWrapper;
@@ -37,7 +37,7 @@ import kmg.tool.gui.cmn.presentation.ui.gui.stage.wrapper.FileChooserWrapper;
  *
  * @since 0.1.0
  *
- * @version 0.1.1
+ * @version 0.1.2
  */
 @Controller
 public class IsCreationController implements Initializable {
@@ -209,17 +209,17 @@ public class IsCreationController implements Initializable {
     /**
      * メイン処理
      *
-     * @since 0.1.0
+     * @since 0.1.2
      *
      * @param inputPath
      *                   入力パス
      * @param outputPath
      *                   出力パス
      *
-     * @throws KmgToolMsgException
-     *                             KMGツールメッセージ例外
+     * @throws KmgToolBaseMsgException
+     *                                 KMGツールメッセージ例外
      */
-    public void mainProc(final Path inputPath, final Path outputPath) throws KmgToolMsgException {
+    public void mainProc(final Path inputPath, final Path outputPath) throws KmgToolBaseMsgException {
 
         /* 挿入SQL作成サービス */
         final short threadNum = Short.parseShort(this.txtThreadNum.getText());
@@ -364,7 +364,7 @@ public class IsCreationController implements Initializable {
             // メイン処理
             this.mainProc(inputPath, outputPath);
 
-        } catch (final KmgToolMsgException e) {
+        } catch (final KmgToolBaseMsgException e) {
 
             // ログの出力
             final KmgToolGuiLogMsgTypes logType     = KmgToolGuiLogMsgTypes.KMGTOOLGUI_LOG10000;

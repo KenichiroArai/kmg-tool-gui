@@ -3,7 +3,7 @@ package kmg.tool.gui.cmn.infrastructure.types;
 import java.util.HashMap;
 import java.util.Map;
 
-import kmg.tool.base.cmn.infrastructure.msg.KmgToolCmnExcMsg;
+import kmg.tool.base.cmn.infrastructure.msg.KmgToolBaseCmnExcMsg;
 import kmg.tool.gui.cmn.infrastructure.msg.KmgToolGuiCmnValMsg;
 
 /**
@@ -17,10 +17,10 @@ import kmg.tool.gui.cmn.infrastructure.msg.KmgToolGuiCmnValMsg;
  *
  * @since 0.1.1
  *
- * @version 0.1.1
+ * @version 0.1.2
  */
 @SuppressWarnings("nls")
-public enum KmgToolGuiValMsgTypes implements KmgToolGuiCmnValMsg, KmgToolCmnExcMsg {
+public enum KmgToolGuiValMsgTypes implements KmgToolGuiCmnValMsg, KmgToolBaseCmnExcMsg {
 
     /* 定義：開始 */
 
