@@ -297,23 +297,11 @@ public class IsCreationController implements Initializable {
 
         }
 
-        // デフォルトファイルがnullではないか
-        if (defaultFile != null) {
-            // nullではない場合
+        final File initialDir = this.resolveInitialDirectoryForFileChooser(defaultFile);
 
-            // ディレクトリが存在しているか
-            if (defaultFile.exists()) {
-                // 存在している場合
+        if (initialDir != null) {
 
-                // ディレクトリか
-                if (defaultFile.isDirectory()) {
-                    // ディレクトリの場合
-
-                    this.fileChooserWrapper.setInitialDirectory(defaultFile);
-
-                }
-
-            }
+            this.fileChooserWrapper.setInitialDirectory(initialDir);
 
         }
 
@@ -354,25 +342,14 @@ public class IsCreationController implements Initializable {
 
         }
 
-        // デフォルトファイルがnullではないか
-        if (defaultFile != null) {
-            // nullではない場合
+        final File initialDir = this.resolveInitialDirectoryForFileChooser(defaultFile);
 
-            // ディレクトリが存在しているか
-            if (defaultFile.exists()) {
-                // 存在している場合
+        if (initialDir != null) {
 
-                // ディレクトリか
-                if (defaultFile.isDirectory()) {
-                    // ディレクトリの場合
-
-                    this.directoryChooserWrapper.setInitialDirectory(defaultFile);
-
-                }
-
-            }
+            this.directoryChooserWrapper.setInitialDirectory(initialDir);
 
         }
+
         final File file = this.directoryChooserWrapper.showDialog(null);
 
         if (file != null) {
@@ -422,6 +399,42 @@ public class IsCreationController implements Initializable {
             this.lblProcTimeUnit.setText(pfaMeas.getTimeUnit().getUnitName());
 
         }
+
+    }
+
+    /**
+     * ファイルチューザー用の初期ディレクトリを解決する。
+     *
+     * @since 0.1.3
+     *
+     * @param defaultFile
+     *                    デフォルトのファイル（親ディレクトリの候補）
+     *
+     * @return 初期ディレクトリとして使用するファイル。使用しない場合は null
+     */
+    private File resolveInitialDirectoryForFileChooser(final File defaultFile) {
+
+        File result = null;
+
+        if (defaultFile == null) {
+
+            return result;
+
+        }
+
+        if (!defaultFile.exists()) {
+
+            return result;
+
+        }
+
+        if (!defaultFile.isDirectory()) {
+
+            return result;
+
+        }
+        result = defaultFile;
+        return result;
 
     }
 }

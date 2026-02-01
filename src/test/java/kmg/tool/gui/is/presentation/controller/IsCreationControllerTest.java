@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 import org.junit.jupiter.api.AfterEach;
@@ -763,7 +764,7 @@ public class IsCreationControllerTest extends AbstractKmgTest {
     }
 
     /**
-     * onCalcInputFileOpenClicked メソッドのテスト - 正常系：defaultFileがnullの場合
+     * onCalcInputFileOpenClicked メソッドのテスト - 正常系：defaultFileがnullの場合（ファイル名のみでgetParentFile()がnull）
      *
      * @since 0.1.1
      *
@@ -778,27 +779,43 @@ public class IsCreationControllerTest extends AbstractKmgTest {
         final File   mockSelectedFile = tempFile.toFile();
         final String expectedFilePath = mockSelectedFile.getAbsolutePath();
 
-        /* 準備 */
-        final TextField txtInputFile = Mockito.mock(TextField.class);
-        Mockito.when(txtInputFile.getText()).thenReturn("non_existing_path");
-        this.reflectionModel.set("txtInputFile", txtInputFile);
+        /*
+         * 準備：カレントディレクトリにファイル名のみのファイルを作成し、 getText() でそのファイル名のみを返すことで new File(name).getParentFile() が null になるケースを再現。
+         * （MockedConstruction<File> はクラスローダーに影響し NPE を起こすため使用しない）
+         */
+        final Path   currentDir   = Paths.get(".").toAbsolutePath().normalize();
+        final String fileNameOnly = "test_null_parent_" + System.nanoTime() + ".xlsx";
+        final Path   fileInCurDir = currentDir.resolve(fileNameOnly);
+        Files.createFile(fileInCurDir);
 
-        Mockito.when(this.mockFileChooserWrapper.showOpenDialog(ArgumentMatchers.any())).thenReturn(mockSelectedFile);
+        try {
 
-        /* テスト対象の実行 */
-        final ActionEvent mockEvent = Mockito.mock(ActionEvent.class);
-        final Method      method    = this.testTarget.getClass().getDeclaredMethod("onCalcInputFileOpenClicked",
-            ActionEvent.class);
-        method.setAccessible(true);
-        method.invoke(this.testTarget, mockEvent);
+            final TextField txtInputFile = Mockito.mock(TextField.class);
+            Mockito.when(txtInputFile.getText()).thenReturn(fileNameOnly);
+            this.reflectionModel.set("txtInputFile", txtInputFile);
 
-        /* 検証の準備 */
-        // 検証の準備は不要
+            Mockito.when(this.mockFileChooserWrapper.showOpenDialog(ArgumentMatchers.any()))
+                .thenReturn(mockSelectedFile);
 
-        /* 検証の実施 */
-        Mockito.verify(this.mockFileChooserWrapper, Mockito.times(1)).setTitle("ファイル選択");
-        Mockito.verify(this.mockFileChooserWrapper, Mockito.times(1)).showOpenDialog(ArgumentMatchers.any());
-        Mockito.verify(txtInputFile, Mockito.times(1)).setText(expectedFilePath);
+            /* テスト対象の実行 */
+            final ActionEvent mockEvent = Mockito.mock(ActionEvent.class);
+            final Method      method    = this.testTarget.getClass().getDeclaredMethod("onCalcInputFileOpenClicked",
+                ActionEvent.class);
+            method.setAccessible(true);
+            method.invoke(this.testTarget, mockEvent);
+
+            /* 検証の実施：defaultFile が null のため setInitialDirectory は呼ばれない */
+            Mockito.verify(this.mockFileChooserWrapper, Mockito.times(1)).setTitle("ファイル選択");
+            Mockito.verify(this.mockFileChooserWrapper, Mockito.never())
+                .setInitialDirectory(ArgumentMatchers.any(File.class));
+            Mockito.verify(this.mockFileChooserWrapper, Mockito.times(1)).showOpenDialog(ArgumentMatchers.any());
+            Mockito.verify(txtInputFile, Mockito.times(1)).setText(expectedFilePath);
+
+        } finally {
+
+            Files.deleteIfExists(fileInCurDir);
+
+        }
 
     }
 
@@ -1051,7 +1068,7 @@ public class IsCreationControllerTest extends AbstractKmgTest {
     }
 
     /**
-     * onCalcOutputDirectoryOpenClicked メソッドのテスト - 正常系：defaultFileがnullの場合
+     * onCalcOutputDirectoryOpenClicked メソッドのテスト - 正常系：defaultFileがnullの場合（ファイル名のみでgetParentFile()がnull）
      *
      * @since 0.1.1
      *
@@ -1066,28 +1083,42 @@ public class IsCreationControllerTest extends AbstractKmgTest {
         final File   mockSelectedDirectory = tempDirectory.toFile();
         final String expectedDirectoryPath = mockSelectedDirectory.getAbsolutePath();
 
-        /* 準備 */
-        final TextField txtOutputDirectory = Mockito.mock(TextField.class);
-        Mockito.when(txtOutputDirectory.getText()).thenReturn("non_existing_path");
-        this.reflectionModel.set("txtOutputDirectory", txtOutputDirectory);
+        /*
+         * 準備：カレントディレクトリにファイル名のみのファイルを作成し、 getText() でそのファイル名のみを返すことで new File(name).getParentFile() が null になるケースを再現
+         */
+        final Path   currentDir   = Paths.get(".").toAbsolutePath().normalize();
+        final String fileNameOnly = "test_null_parent_out_" + System.nanoTime() + ".xlsx";
+        final Path   fileInCurDir = currentDir.resolve(fileNameOnly);
+        Files.createFile(fileInCurDir);
 
-        Mockito.when(this.mockDirectoryChooserWrapper.showDialog(ArgumentMatchers.any()))
-            .thenReturn(mockSelectedDirectory);
+        try {
 
-        /* テスト対象の実行 */
-        final ActionEvent mockEvent = Mockito.mock(ActionEvent.class);
-        final Method      method    = this.testTarget.getClass().getDeclaredMethod("onCalcOutputDirectoryOpenClicked",
-            ActionEvent.class);
-        method.setAccessible(true);
-        method.invoke(this.testTarget, mockEvent);
+            final TextField txtOutputDirectory = Mockito.mock(TextField.class);
+            Mockito.when(txtOutputDirectory.getText()).thenReturn(fileNameOnly);
+            this.reflectionModel.set("txtOutputDirectory", txtOutputDirectory);
 
-        /* 検証の準備 */
-        // 検証の準備は不要
+            Mockito.when(this.mockDirectoryChooserWrapper.showDialog(ArgumentMatchers.any()))
+                .thenReturn(mockSelectedDirectory);
 
-        /* 検証の実施 */
-        Mockito.verify(this.mockDirectoryChooserWrapper, Mockito.times(1)).setTitle("ディレクトリ選択");
-        Mockito.verify(this.mockDirectoryChooserWrapper, Mockito.times(1)).showDialog(ArgumentMatchers.any());
-        Mockito.verify(txtOutputDirectory, Mockito.times(1)).setText(expectedDirectoryPath);
+            /* テスト対象の実行 */
+            final ActionEvent mockEvent = Mockito.mock(ActionEvent.class);
+            final Method      method    = this.testTarget.getClass()
+                .getDeclaredMethod("onCalcOutputDirectoryOpenClicked", ActionEvent.class);
+            method.setAccessible(true);
+            method.invoke(this.testTarget, mockEvent);
+
+            /* 検証の実施：defaultFile が null のため setInitialDirectory は呼ばれない */
+            Mockito.verify(this.mockDirectoryChooserWrapper, Mockito.times(1)).setTitle("ディレクトリ選択");
+            Mockito.verify(this.mockDirectoryChooserWrapper, Mockito.never())
+                .setInitialDirectory(ArgumentMatchers.any(File.class));
+            Mockito.verify(this.mockDirectoryChooserWrapper, Mockito.times(1)).showDialog(ArgumentMatchers.any());
+            Mockito.verify(txtOutputDirectory, Mockito.times(1)).setText(expectedDirectoryPath);
+
+        } finally {
+
+            Files.deleteIfExists(fileInCurDir);
+
+        }
 
     }
 
@@ -1384,6 +1415,33 @@ public class IsCreationControllerTest extends AbstractKmgTest {
             Mockito.verify(lblProcTimeUnit, Mockito.times(1)).setText(ArgumentMatchers.anyString());
 
         }
+
+    }
+
+    /**
+     * resolveInitialDirectoryForFileChooser メソッドのテスト - 正常系：defaultFileが存在するがディレクトリではない場合（nullを返す）
+     *
+     * @since 0.1.3
+     *
+     * @throws Exception
+     *                   例外
+     */
+    @Test
+    public void testResolveInitialDirectoryForFileChooser_normalExistsButNotDirectory() throws Exception {
+
+        /* 準備：exists() true / isDirectory() false の File をモック（引数で渡すだけなのでクラスローダーに影響しない） */
+        final File mockFile = Mockito.mock(File.class);
+        Mockito.when(mockFile.exists()).thenReturn(true);
+        Mockito.when(mockFile.isDirectory()).thenReturn(false);
+
+        /* テスト対象の実行 */
+        final Method method
+            = this.testTarget.getClass().getDeclaredMethod("resolveInitialDirectoryForFileChooser", File.class);
+        method.setAccessible(true);
+        final File actual = (File) method.invoke(this.testTarget, mockFile);
+
+        /* 検証の実施 */
+        Assertions.assertNull(actual, "ディレクトリでない場合は null を返すこと");
 
     }
 
