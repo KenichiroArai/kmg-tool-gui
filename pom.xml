@@ -12,7 +12,7 @@
 
     <groupId>kmg.tool.gui</groupId>
     <artifactId>kmg-tool-gui</artifactId>
-    <version>0.1.2</version>
+    <version>0.1.3</version>
     <name>kmg-tool-gui</name>
     <description>KMGツールGUI</description>
     <packaging>jar</packaging>
