@@ -64,6 +64,13 @@ public class IsCreationController implements Initializable {
     private static final String DEFAULT_DIRECTORY_PATH = "c:/"; //$NON-NLS-1$
 
     /**
+     * ユーザーホームのシステムプロパティキー
+     *
+     * @since 0.1.3
+     */
+    private static final String USER_HOME_PROPERTY_KEY = "user.home"; //$NON-NLS-1$
+
+    /**
      * ロガー
      *
      * @since 0.1.0
@@ -279,7 +286,7 @@ public class IsCreationController implements Initializable {
 
         if (KmgString.isEmpty(defaultFilePath)) {
 
-            defaultFilePath = System.getProperty("user.home");
+            defaultFilePath = System.getProperty(IsCreationController.USER_HOME_PROPERTY_KEY);
 
         }
         File defaultFile = new File(defaultFilePath);
@@ -290,12 +297,26 @@ public class IsCreationController implements Initializable {
 
         }
 
-        // ディレクトリが存在し、かつディレクトリである場合のみ設定
-        if ((defaultFile != null) && defaultFile.exists() && defaultFile.isDirectory()) {
+        // デフォルトファイルがnullではないか
+        if (defaultFile != null) {
+            // nullではない場合
 
-            this.fileChooserWrapper.setInitialDirectory(defaultFile);
+            // ディレクトリが存在しているか
+            if (defaultFile.exists()) {
+                // 存在している場合
+
+                // ディレクトリか
+                if (defaultFile.isDirectory()) {
+                    // ディレクトリの場合
+
+                    this.fileChooserWrapper.setInitialDirectory(defaultFile);
+
+                }
+
+            }
 
         }
+
         final File file = this.fileChooserWrapper.showOpenDialog(null);
 
         if (file != null) {
@@ -322,7 +343,7 @@ public class IsCreationController implements Initializable {
 
         if (KmgString.isEmpty(defaultFilePath)) {
 
-            defaultFilePath = System.getProperty("user.home");
+            defaultFilePath = System.getProperty(IsCreationController.USER_HOME_PROPERTY_KEY);
 
         }
         File defaultFile = new File(defaultFilePath);
@@ -333,10 +354,23 @@ public class IsCreationController implements Initializable {
 
         }
 
-        // ディレクトリが存在し、かつディレクトリである場合のみ設定
-        if ((defaultFile != null) && defaultFile.exists() && defaultFile.isDirectory()) {
+        // デフォルトファイルがnullではないか
+        if (defaultFile != null) {
+            // nullではない場合
 
-            this.directoryChooserWrapper.setInitialDirectory(defaultFile);
+            // ディレクトリが存在しているか
+            if (defaultFile.exists()) {
+                // 存在している場合
+
+                // ディレクトリか
+                if (defaultFile.isDirectory()) {
+                    // ディレクトリの場合
+
+                    this.directoryChooserWrapper.setInitialDirectory(defaultFile);
+
+                }
+
+            }
 
         }
         final File file = this.directoryChooserWrapper.showDialog(null);
