@@ -37,7 +37,7 @@ import kmg.tool.gui.cmn.presentation.ui.gui.stage.wrapper.FileChooserWrapper;
  *
  * @since 0.1.0
  *
- * @version 0.1.2
+ * @version 0.1.3
  */
 @Controller
 public class IsCreationController implements Initializable {
@@ -55,6 +55,13 @@ public class IsCreationController implements Initializable {
      * @since 0.1.0
      */
     private static final String DIRECTORY_CHOOSER_TITLE = "ディレクトリ選択"; //$NON-NLS-1$
+
+    /**
+     * デフォルトディレクトリパス
+     *
+     * @since 0.1.3
+     */
+    private static final String DEFAULT_DIRECTORY_PATH = "c:/"; //$NON-NLS-1$
 
     /**
      * ロガー

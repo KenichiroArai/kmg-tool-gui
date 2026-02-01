@@ -12,7 +12,6 @@ import java.util.ResourceBundle;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -51,7 +50,7 @@ import kmg.tool.gui.is.presentation.ui.gui.controller.IsCreationController;
  *
  * @since 0.1.0
  *
- * @version 0.1.2
+ * @version 0.1.3
  */
 @ExtendWith({
     MockitoExtension.class, ApplicationExtension.class
@@ -375,7 +374,6 @@ public class IsCreationControllerTest extends AbstractKmgTest {
      *                   例外
      */
     @Test
-    @Disabled("DEFAULT_DIRECTORY_PATH定数はIsCreationControllerに存在しないため無効化")
     public void testDEFAULT_DIRECTORY_PATH_normalBasic() throws Exception {
 
         /* 期待値の定義 */
@@ -813,7 +811,6 @@ public class IsCreationControllerTest extends AbstractKmgTest {
      *                   例外
      */
     @Test
-    @Disabled
     public void testOnCalcInputFileOpenClicked_normalExistingDirectoryPath() throws Exception {
 
         /* 期待値の定義 */
@@ -856,7 +853,6 @@ public class IsCreationControllerTest extends AbstractKmgTest {
      *                   例外
      */
     @Test
-    @Disabled
     public void testOnCalcInputFileOpenClicked_normalExistingFilePath() throws Exception {
 
         /* 期待値の定義 */
@@ -899,11 +895,10 @@ public class IsCreationControllerTest extends AbstractKmgTest {
      *                   例外
      */
     @Test
-    @Disabled
     public void testOnCalcInputFileOpenClicked_normalExistingPath() throws Exception {
 
-        /* 期待値の定義 */
-        final String existingPath     = "C:\\existing\\path\\file.xlsx";
+        /* 期待値の定義（既存パスは実在するパスを使用：コントローラーが setInitialDirectory を呼ぶ条件を満たすため） */
+        final String existingPath     = this.testInputFile.toAbsolutePath().toString();
         final String expectedFilePath = "C:\\test\\selected.xlsx";
 
         /* 準備 */
@@ -942,7 +937,6 @@ public class IsCreationControllerTest extends AbstractKmgTest {
      *                   例外
      */
     @Test
-    @Disabled
     public void testOnCalcInputFileOpenClicked_normalFileSelected() throws Exception {
 
         /* 期待値の定義 */
@@ -1106,7 +1100,6 @@ public class IsCreationControllerTest extends AbstractKmgTest {
      *                   例外
      */
     @Test
-    @Disabled
     public void testOnCalcOutputDirectoryOpenClicked_normalDirectorySelected() throws Exception {
 
         /* 期待値の定義 */
@@ -1149,7 +1142,6 @@ public class IsCreationControllerTest extends AbstractKmgTest {
      *                   例外
      */
     @Test
-    @Disabled
     public void testOnCalcOutputDirectoryOpenClicked_normalExistingDirectoryPath() throws Exception {
 
         /* 期待値の定義 */
@@ -1193,7 +1185,6 @@ public class IsCreationControllerTest extends AbstractKmgTest {
      *                   例外
      */
     @Test
-    @Disabled
     public void testOnCalcOutputDirectoryOpenClicked_normalExistingFilePath() throws Exception {
 
         /* 期待値の定義 */
