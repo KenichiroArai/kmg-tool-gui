@@ -7,9 +7,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.AnchorPane;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,6 +27,8 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.ApplicationTest;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import kmg.core.infrastructure.model.impl.KmgReflectionModelImpl;
 import kmg.fund.infrastructure.context.KmgMessageSource;
@@ -421,16 +420,15 @@ public class IsCreationToolTest extends ApplicationTest {
 
         /* 検証の準備 */
         final KmgReflectionModelImpl localReflectionModel = new KmgReflectionModelImpl(localTestTarget);
+
         try (ConfigurableApplicationContext actualSpringContext
             = (ConfigurableApplicationContext) localReflectionModel.get("springContext")) {
 
             final KmgMessageSource actualMessageSource = (KmgMessageSource) localReflectionModel.get("messageSource");
-            final boolean          actualResult        = (actualSpringContext != null)
-                    && (actualMessageSource != null);
+            final boolean          actualResult        = (actualSpringContext != null) && (actualMessageSource != null);
 
             /* 検証の実施 */
-            Assertions.assertEquals(expectedResult, actualResult,
-                "Springアプリケーションコンテキストとメッセージソースが正しく初期化されていること");
+            Assertions.assertEquals(expectedResult, actualResult, "Springアプリケーションコンテキストとメッセージソースが正しく初期化されていること");
 
         }
 
@@ -1000,15 +998,15 @@ public class IsCreationToolTest extends ApplicationTest {
         final String expectedErrorMessage = "エラーメッセージ";
 
         /* 準備: getFxmlUrl()がnullを返すサブクラスを使用 */
-        final IsCreationTool localTestTarget = new IsCreationTool(this.mockLogger) {
+        final IsCreationTool         localTestTarget      = new IsCreationTool(this.mockLogger) {
 
-            @Override
-            protected URL getFxmlUrl() {
+                                                              @Override
+                                                              protected URL getFxmlUrl() {
 
-                return null;
+                                                                  return null;
 
-            }
-        };
+                                                              }
+                                                          };
         final Stage                  mockStage            = Mockito.mock(Stage.class);
         final KmgReflectionModelImpl localReflectionModel = new KmgReflectionModelImpl(localTestTarget);
         localReflectionModel.set("springContext", this.mockSpringContext);
@@ -1046,15 +1044,16 @@ public class IsCreationToolTest extends ApplicationTest {
         final String expectedErrorMessage = "IOExceptionメッセージ";
 
         /* 準備: loadFxml()がIOExceptionを投げるサブクラスを使用 */
-        final IsCreationTool localTestTarget = new IsCreationTool(this.mockLogger) {
+        final IsCreationTool         localTestTarget      = new IsCreationTool(this.mockLogger) {
 
-            @Override
-            protected AnchorPane loadFxml(final FXMLLoader fxml) throws IOException {
+                                                              @Override
+                                                              protected AnchorPane loadFxml(final FXMLLoader fxml)
+                                                                  throws IOException {
 
-                throw new IOException("FXML load failed for test");
+                                                                  throw new IOException("FXML load failed for test");
 
-            }
-        };
+                                                              }
+                                                          };
         final Stage                  mockStage            = Mockito.mock(Stage.class);
         final KmgReflectionModelImpl localReflectionModel = new KmgReflectionModelImpl(localTestTarget);
         localReflectionModel.set("springContext", this.mockSpringContext);

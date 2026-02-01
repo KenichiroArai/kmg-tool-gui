@@ -126,20 +126,6 @@ public class IsCreationTool extends Application {
     }
 
     /**
-     * FXMLのURLを取得する。<br>
-     * テストでurl==nullやIOExceptionを再現するため、サブクラスでオーバーライド可能。
-     *
-     * @since 0.1.3
-     * @return FXMLのURL。存在しない場合はnull
-     */
-    protected URL getFxmlUrl() {
-
-        URL result = this.getClass().getResource(IsCreationTool.FXML_PATH);
-        return result;
-
-    }
-
-    /**
      * 開始<br>
      *
      * @since 0.1.0
@@ -194,24 +180,6 @@ public class IsCreationTool extends Application {
     }
 
     /**
-     * FXMLをロードする。<br>
-     * テストでIOExceptionを再現するため、サブクラスでオーバーライド可能。
-     *
-     * @since 0.1.3
-     * @param fxml
-     *             FXMLLoader
-     * @return ルートペイン
-     * @throws IOException
-     *             FXMLの読み込みに失敗した場合
-     */
-    protected AnchorPane loadFxml(final FXMLLoader fxml) throws IOException {
-
-        AnchorPane result = fxml.load();
-        return result;
-
-    }
-
-    /**
      * 停止<br>
      *
      * @since 0.1.0
@@ -220,6 +188,42 @@ public class IsCreationTool extends Application {
     public void stop() {
 
         this.springContext.close();
+
+    }
+
+    /**
+     * FXMLのURLを取得する。<br>
+     * テストでurl==nullやIOExceptionを再現するため、サブクラスでオーバーライド可能。
+     *
+     * @since 0.1.3
+     *
+     * @return FXMLのURL。存在しない場合はnull
+     */
+    protected URL getFxmlUrl() {
+
+        final URL result = this.getClass().getResource(IsCreationTool.FXML_PATH);
+        return result;
+
+    }
+
+    /**
+     * FXMLをロードする。<br>
+     * テストでIOExceptionを再現するため、サブクラスでオーバーライド可能。
+     *
+     * @since 0.1.3
+     *
+     * @param fxml
+     *             FXMLLoader
+     *
+     * @return ルートペイン
+     *
+     * @throws IOException
+     *                     FXMLの読み込みに失敗した場合
+     */
+    protected AnchorPane loadFxml(final FXMLLoader fxml) throws IOException {
+
+        final AnchorPane result = fxml.load();
+        return result;
 
     }
 }
