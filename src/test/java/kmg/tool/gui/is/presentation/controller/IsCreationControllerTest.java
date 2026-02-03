@@ -364,39 +364,6 @@ public class IsCreationControllerTest extends AbstractKmgTest {
     }
 
     /**
-     * DEFAULT_DIRECTORY_PATH 定数のテスト - 正常系：定数が正しく定義されている場合
-     * <p>
-     * 注：この定数はIsCreationControllerから削除されたため、このテストは無効化されています。
-     * </p>
-     *
-     * @since 0.1.0
-     *
-     * @throws Exception
-     *                   例外
-     */
-    @Test
-    public void testDEFAULT_DIRECTORY_PATH_normalBasic() throws Exception {
-
-        /* 期待値の定義 */
-        final String expected = "c:/";
-
-        /* 準備 */
-        // 準備は不要
-
-        /* テスト対象の実行 */
-        final Field field = IsCreationController.class.getDeclaredField("DEFAULT_DIRECTORY_PATH");
-        field.setAccessible(true);
-        final String actual = (String) field.get(null);
-
-        /* 検証の準備 */
-        // 検証の準備は不要
-
-        /* 検証の実施 */
-        Assertions.assertEquals(expected, actual, "DEFAULT_DIRECTORY_PATH定数が正しく定義されていること");
-
-    }
-
-    /**
      * DIRECTORY_CHOOSER_TITLE 定数のテスト - 正常系：定数が正しく定義されている場合
      *
      * @since 0.1.0
