@@ -1044,16 +1044,16 @@ public class IsCreationToolTest extends ApplicationTest {
         final String expectedErrorMessage = "IOExceptionメッセージ";
 
         /* 準備: loadFxml()がIOExceptionを投げるサブクラスを使用 */
-        final IsCreationTool         localTestTarget      = new IsCreationTool(this.mockLogger) {
+        final IsCreationTool localTestTarget = new IsCreationTool(this.mockLogger) {
 
-                                                              @Override
-                                                              protected AnchorPane loadFxml(final FXMLLoader fxml)
-                                                                  throws IOException {
+            @Override
+            protected AnchorPane loadFxml(final FXMLLoader fxml) throws IOException {
 
-                                                                  throw new IOException("FXML load failed for test");
+                throw new IOException("FXML load failed for test");
 
-                                                              }
-                                                          };
+            }
+        };
+
         final Stage                  mockStage            = Mockito.mock(Stage.class);
         final KmgReflectionModelImpl localReflectionModel = new KmgReflectionModelImpl(localTestTarget);
         localReflectionModel.set("springContext", this.mockSpringContext);

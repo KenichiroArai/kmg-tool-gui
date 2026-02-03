@@ -172,6 +172,42 @@ public class IsCreationController implements Initializable {
     private Label lblProcTimeUnit;
 
     /**
+     * ファイルチューザー用の初期ディレクトリを解決する。
+     *
+     * @since 0.1.3
+     *
+     * @param defaultFile
+     *                    デフォルトのファイル（親ディレクトリの候補）
+     *
+     * @return 初期ディレクトリとして使用するファイル。使用しない場合は null
+     */
+    private static File resolveInitialDirectoryForFileChooser(final File defaultFile) {
+
+        File result = null;
+
+        if (defaultFile == null) {
+
+            return result;
+
+        }
+
+        if (!defaultFile.exists()) {
+
+            return result;
+
+        }
+
+        if (!defaultFile.isDirectory()) {
+
+            return result;
+
+        }
+        result = defaultFile;
+        return result;
+
+    }
+
+    /**
      * 標準ロガーを使用して入出力ツールを初期化するコンストラクタ<br>
      *
      * @since 0.1.0
@@ -297,7 +333,7 @@ public class IsCreationController implements Initializable {
 
         }
 
-        final File initialDir = this.resolveInitialDirectoryForFileChooser(defaultFile);
+        final File initialDir = IsCreationController.resolveInitialDirectoryForFileChooser(defaultFile);
 
         if (initialDir != null) {
 
@@ -342,7 +378,7 @@ public class IsCreationController implements Initializable {
 
         }
 
-        final File initialDir = this.resolveInitialDirectoryForFileChooser(defaultFile);
+        final File initialDir = IsCreationController.resolveInitialDirectoryForFileChooser(defaultFile);
 
         if (initialDir != null) {
 
@@ -399,42 +435,6 @@ public class IsCreationController implements Initializable {
             this.lblProcTimeUnit.setText(pfaMeas.getTimeUnit().getUnitName());
 
         }
-
-    }
-
-    /**
-     * ファイルチューザー用の初期ディレクトリを解決する。
-     *
-     * @since 0.1.3
-     *
-     * @param defaultFile
-     *                    デフォルトのファイル（親ディレクトリの候補）
-     *
-     * @return 初期ディレクトリとして使用するファイル。使用しない場合は null
-     */
-    private File resolveInitialDirectoryForFileChooser(final File defaultFile) {
-
-        File result = null;
-
-        if (defaultFile == null) {
-
-            return result;
-
-        }
-
-        if (!defaultFile.exists()) {
-
-            return result;
-
-        }
-
-        if (!defaultFile.isDirectory()) {
-
-            return result;
-
-        }
-        result = defaultFile;
-        return result;
 
     }
 }

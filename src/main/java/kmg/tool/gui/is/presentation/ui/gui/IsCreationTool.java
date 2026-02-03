@@ -87,27 +87,6 @@ public class IsCreationTool extends Application {
     }
 
     /**
-     * FXMLをロードする。<br>
-     * テストでIOExceptionを再現するため、サブクラスでオーバーライド可能。
-     *
-     * @since 0.1.3
-     *
-     * @param fxml
-     *             FXMLLoader
-     *
-     * @return ルートペイン
-     *
-     * @throws IOException
-     *                     FXMLの読み込みに失敗した場合
-     */
-    protected static AnchorPane loadFxml(final FXMLLoader fxml) throws IOException {
-
-        final AnchorPane result = fxml.load();
-        return result;
-
-    }
-
-    /**
      * 標準ロガーを使用して入出力ツールを初期化するコンストラクタ<br>
      *
      * @since 0.1.0
@@ -180,7 +159,7 @@ public class IsCreationTool extends Application {
 
         try {
 
-            root = IsCreationTool.loadFxml(fxml);
+            root = this.loadFxml(fxml);
 
         } catch (final IOException e) {
 
@@ -223,6 +202,27 @@ public class IsCreationTool extends Application {
     protected URL getFxmlUrl() {
 
         final URL result = this.getClass().getResource(IsCreationTool.FXML_PATH);
+        return result;
+
+    }
+
+    /**
+     * FXMLをロードする。<br>
+     * テストでIOExceptionを再現するため、サブクラスでオーバーライド可能。
+     *
+     * @since 0.1.3
+     *
+     * @param fxml
+     *             FXMLLoader
+     *
+     * @return ルートペイン
+     *
+     * @throws IOException
+     *                     FXMLの読み込みに失敗した場合
+     */
+    protected AnchorPane loadFxml(final FXMLLoader fxml) throws IOException {
+
+        final AnchorPane result = fxml.load();
         return result;
 
     }
