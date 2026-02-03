@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"kmg.tool.gui.is.presentation.ui.gui.controller"},{"l":"すべてのパッケージ","u":"allpackages-index.html"}];updateSearchResults();
+packageSearchIndex = [{"l":"kmg.tool.gui.cmn.infrastructure.msg"},{"l":"kmg.tool.gui.is.presentation.ui.gui.controller"},{"l":"すべてのパッケージ","u":"allpackages-index.html"}];updateSearchResults();
