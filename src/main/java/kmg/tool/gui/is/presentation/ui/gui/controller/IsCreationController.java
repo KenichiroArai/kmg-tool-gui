@@ -57,13 +57,6 @@ public class IsCreationController implements Initializable {
     private static final String DIRECTORY_CHOOSER_TITLE = "ディレクトリ選択"; //$NON-NLS-1$
 
     /**
-     * デフォルトディレクトリパス
-     *
-     * @since 0.1.3
-     */
-    private static final String DEFAULT_DIRECTORY_PATH = "c:/"; //$NON-NLS-1$
-
-    /**
      * ユーザーホームのシステムプロパティキー
      *
      * @since 0.1.3
