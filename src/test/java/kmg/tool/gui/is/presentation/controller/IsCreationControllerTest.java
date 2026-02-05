@@ -1100,15 +1100,14 @@ public class IsCreationControllerTest extends AbstractKmgTest {
     @Test
     public void testOnCalcOutputDirectoryOpenClicked_normalDirectorySelected() throws Exception {
 
-        /* 期待値の定義 */
-        final String expectedDirectoryPath = "C:\\test\\output";
+        /* 期待値の定義（getAbsolutePath() で OS 非依存の期待値とする） */
+        final File   mockSelectedDirectory = new File("C:\\test\\output");
+        final String expectedDirectoryPath = mockSelectedDirectory.getAbsolutePath();
 
         /* 準備 */
         final TextField txtOutputDirectory = Mockito.mock(TextField.class);
         Mockito.when(txtOutputDirectory.getText()).thenReturn("");
         this.reflectionModel.set("txtOutputDirectory", txtOutputDirectory);
-
-        final File mockSelectedDirectory = new File(expectedDirectoryPath);
         Mockito.when(this.mockDirectoryChooserWrapper.showDialog(ArgumentMatchers.any()))
             .thenReturn(mockSelectedDirectory);
 
@@ -1142,16 +1141,15 @@ public class IsCreationControllerTest extends AbstractKmgTest {
     @Test
     public void testOnCalcOutputDirectoryOpenClicked_normalExistingDirectoryPath() throws Exception {
 
-        /* 期待値の定義 */
+        /* 期待値の定義（getAbsolutePath() で OS 非依存の期待値とする） */
         final String existingDirectoryPath = this.testOutputDir.toAbsolutePath().toString();
-        final String expectedDirectoryPath = "C:\\test\\output";
+        final File   mockSelectedDirectory = new File("C:\\test\\output");
+        final String expectedDirectoryPath = mockSelectedDirectory.getAbsolutePath();
 
         /* 準備 */
         final TextField txtOutputDirectory = Mockito.mock(TextField.class);
         Mockito.when(txtOutputDirectory.getText()).thenReturn(existingDirectoryPath);
         this.reflectionModel.set("txtOutputDirectory", txtOutputDirectory);
-
-        final File mockSelectedDirectory = new File(expectedDirectoryPath);
         Mockito.when(this.mockDirectoryChooserWrapper.showDialog(ArgumentMatchers.any()))
             .thenReturn(mockSelectedDirectory);
 
@@ -1185,16 +1183,15 @@ public class IsCreationControllerTest extends AbstractKmgTest {
     @Test
     public void testOnCalcOutputDirectoryOpenClicked_normalExistingFilePath() throws Exception {
 
-        /* 期待値の定義 */
+        /* 期待値の定義（getAbsolutePath() で OS 非依存の期待値とする） */
         final String existingFilePath      = this.testInputFile.toAbsolutePath().toString();
-        final String expectedDirectoryPath = "C:\\test\\output";
+        final File   mockSelectedDirectory = new File("C:\\test\\output");
+        final String expectedDirectoryPath = mockSelectedDirectory.getAbsolutePath();
 
         /* 準備 */
         final TextField txtOutputDirectory = Mockito.mock(TextField.class);
         Mockito.when(txtOutputDirectory.getText()).thenReturn(existingFilePath);
         this.reflectionModel.set("txtOutputDirectory", txtOutputDirectory);
-
-        final File mockSelectedDirectory = new File(expectedDirectoryPath);
         Mockito.when(this.mockDirectoryChooserWrapper.showDialog(ArgumentMatchers.any()))
             .thenReturn(mockSelectedDirectory);
 
