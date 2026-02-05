@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import javafx.application.Application;
@@ -27,10 +28,12 @@ import kmg.tool.gui.cmn.infrastructure.types.KmgToolGuiLogMsgTypes;
  *
  * @since 0.1.0
  *
- * @version 0.1.1
+ * @version 0.1.3
  */
 @SpringBootApplication(scanBasePackages = {
     "kmg"
+}, exclude = {
+    DataSourceAutoConfiguration.class
 })
 public class IsCreationTool extends Application {
 
@@ -80,6 +83,27 @@ public class IsCreationTool extends Application {
     public static void main(final String[] args) {
 
         Application.launch(IsCreationTool.class, args);
+
+    }
+
+    /**
+     * FXMLをロードする。<br>
+     * テストでIOExceptionを再現するため、サブクラスでオーバーライド可能。
+     *
+     * @since 0.1.3
+     *
+     * @param fxml
+     *             FXMLLoader
+     *
+     * @return ルートペイン
+     *
+     * @throws IOException
+     *                     FXMLの読み込みに失敗した場合
+     */
+    protected static AnchorPane loadFxml(final FXMLLoader fxml) throws IOException {
+
+        final AnchorPane result = fxml.load();
+        return result;
 
     }
 
@@ -135,7 +159,7 @@ public class IsCreationTool extends Application {
 
         stage.setTitle(IsCreationTool.STAGE_TITLE);
 
-        final URL url = this.getClass().getResource(IsCreationTool.FXML_PATH);
+        final URL url = this.getFxmlUrl();
 
         if (url == null) {
 
@@ -156,7 +180,7 @@ public class IsCreationTool extends Application {
 
         try {
 
-            root = fxml.load();
+            root = IsCreationTool.loadFxml(fxml);
 
         } catch (final IOException e) {
 
@@ -185,6 +209,21 @@ public class IsCreationTool extends Application {
     public void stop() {
 
         this.springContext.close();
+
+    }
+
+    /**
+     * FXMLのURLを取得する。<br>
+     * テストでurl==nullやIOExceptionを再現するため、サブクラスでオーバーライド可能。
+     *
+     * @since 0.1.3
+     *
+     * @return FXMLのURL。存在しない場合はnull
+     */
+    protected URL getFxmlUrl() {
+
+        final URL result = this.getClass().getResource(IsCreationTool.FXML_PATH);
+        return result;
 
     }
 }
