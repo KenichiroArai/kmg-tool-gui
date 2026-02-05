@@ -797,16 +797,15 @@ public class IsCreationControllerTest extends AbstractKmgTest {
     @Test
     public void testOnCalcInputFileOpenClicked_normalExistingDirectoryPath() throws Exception {
 
-        /* 期待値の定義 */
+        /* 期待値の定義（getAbsolutePath() で OS 非依存の期待値とする） */
         final String existingDirectoryPath = this.testOutputDir.toAbsolutePath().toString();
-        final String expectedFilePath      = "C:\\test\\selected.xlsx";
+        final File   mockSelectedFile      = new File("C:\\test\\selected.xlsx");
+        final String expectedFilePath      = mockSelectedFile.getAbsolutePath();
 
         /* 準備 */
         final TextField txtInputFile = Mockito.mock(TextField.class);
         Mockito.when(txtInputFile.getText()).thenReturn(existingDirectoryPath);
         this.reflectionModel.set("txtInputFile", txtInputFile);
-
-        final File mockSelectedFile = new File(expectedFilePath);
         Mockito.when(this.mockFileChooserWrapper.showOpenDialog(ArgumentMatchers.any())).thenReturn(mockSelectedFile);
 
         /* テスト対象の実行 */
@@ -839,16 +838,15 @@ public class IsCreationControllerTest extends AbstractKmgTest {
     @Test
     public void testOnCalcInputFileOpenClicked_normalExistingFilePath() throws Exception {
 
-        /* 期待値の定義 */
+        /* 期待値の定義（getAbsolutePath() で OS 非依存の期待値とする） */
         final String existingFilePath = this.testInputFile.toAbsolutePath().toString();
-        final String expectedFilePath = "C:\\test\\selected.xlsx";
+        final File   mockSelectedFile = new File("C:\\test\\selected.xlsx");
+        final String expectedFilePath = mockSelectedFile.getAbsolutePath();
 
         /* 準備 */
         final TextField txtInputFile = Mockito.mock(TextField.class);
         Mockito.when(txtInputFile.getText()).thenReturn(existingFilePath);
         this.reflectionModel.set("txtInputFile", txtInputFile);
-
-        final File mockSelectedFile = new File(expectedFilePath);
         Mockito.when(this.mockFileChooserWrapper.showOpenDialog(ArgumentMatchers.any())).thenReturn(mockSelectedFile);
 
         /* テスト対象の実行 */
@@ -881,16 +879,15 @@ public class IsCreationControllerTest extends AbstractKmgTest {
     @Test
     public void testOnCalcInputFileOpenClicked_normalExistingPath() throws Exception {
 
-        /* 期待値の定義（既存パスは実在するパスを使用：コントローラーが setInitialDirectory を呼ぶ条件を満たすため） */
+        /* 期待値の定義（既存パスは実在するパスを使用：コントローラーが setInitialDirectory を呼ぶ条件を満たすため。getAbsolutePath() で OS 非依存） */
         final String existingPath     = this.testInputFile.toAbsolutePath().toString();
-        final String expectedFilePath = "C:\\test\\selected.xlsx";
+        final File   mockSelectedFile = new File("C:\\test\\selected.xlsx");
+        final String expectedFilePath = mockSelectedFile.getAbsolutePath();
 
         /* 準備 */
         final TextField txtInputFile = Mockito.mock(TextField.class);
         Mockito.when(txtInputFile.getText()).thenReturn(existingPath);
         this.reflectionModel.set("txtInputFile", txtInputFile);
-
-        final File mockSelectedFile = new File(expectedFilePath);
         Mockito.when(this.mockFileChooserWrapper.showOpenDialog(ArgumentMatchers.any())).thenReturn(mockSelectedFile);
 
         /* テスト対象の実行 */
@@ -923,15 +920,14 @@ public class IsCreationControllerTest extends AbstractKmgTest {
     @Test
     public void testOnCalcInputFileOpenClicked_normalFileSelected() throws Exception {
 
-        /* 期待値の定義 */
-        final String expectedFilePath = "C:\\test\\input.xlsx";
+        /* 期待値の定義（getAbsolutePath() で OS 非依存の期待値とする） */
+        final File   mockSelectedFile = new File("C:\\test\\input.xlsx");
+        final String expectedFilePath = mockSelectedFile.getAbsolutePath();
 
         /* 準備 */
         final TextField txtInputFile = Mockito.mock(TextField.class);
         Mockito.when(txtInputFile.getText()).thenReturn("");
         this.reflectionModel.set("txtInputFile", txtInputFile);
-
-        final File mockSelectedFile = new File(expectedFilePath);
         Mockito.when(this.mockFileChooserWrapper.showOpenDialog(ArgumentMatchers.any())).thenReturn(mockSelectedFile);
 
         /* テスト対象の実行 */
