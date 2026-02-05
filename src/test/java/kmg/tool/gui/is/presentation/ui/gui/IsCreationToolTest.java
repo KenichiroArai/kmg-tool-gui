@@ -28,7 +28,6 @@ import org.testfx.framework.junit5.ApplicationTest;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import kmg.core.infrastructure.model.impl.KmgReflectionModelImpl;
 import kmg.fund.infrastructure.context.KmgMessageSource;
@@ -998,15 +997,17 @@ public class IsCreationToolTest extends ApplicationTest {
         final String expectedErrorMessage = "エラーメッセージ";
 
         /* 準備: getFxmlUrl()がnullを返すサブクラスを使用 */
-        final IsCreationTool         localTestTarget      = new IsCreationTool(this.mockLogger) {
+        final IsCreationTool localTestTarget = new IsCreationTool(this.mockLogger) {
 
-                                                              @Override
-                                                              protected URL getFxmlUrl() {
+            @Override
+            protected URL getFxmlUrl() {
 
-                                                                  return null;
+                final URL result = null;
+                return result;
 
-                                                              }
-                                                          };
+            }
+        };
+
         final Stage                  mockStage            = Mockito.mock(Stage.class);
         final KmgReflectionModelImpl localReflectionModel = new KmgReflectionModelImpl(localTestTarget);
         localReflectionModel.set("springContext", this.mockSpringContext);
@@ -1029,7 +1030,7 @@ public class IsCreationToolTest extends ApplicationTest {
     /**
      * start メソッドのテスト - 異常系：FXMLファイルの読み込み時にIOExceptionが発生する場合
      * <p>
-     * loadFxml()をオーバーライドしてIOExceptionを投げるサブクラスで、catch分岐をカバーする。
+     * MockedStaticでloadFxml()がIOExceptionを投げるようにスタブし、catch分岐をカバーする。
      * </p>
      *
      * @since 0.1.1
@@ -1043,17 +1044,8 @@ public class IsCreationToolTest extends ApplicationTest {
         /* 期待値の定義 */
         final String expectedErrorMessage = "IOExceptionメッセージ";
 
-        /* 準備: loadFxml()がIOExceptionを投げるサブクラスを使用 */
-        final IsCreationTool localTestTarget = new IsCreationTool(this.mockLogger) {
-
-            @Override
-            protected AnchorPane loadFxml(final FXMLLoader fxml) throws IOException {
-
-                throw new IOException("FXML load failed for test");
-
-            }
-        };
-
+        /* 準備 */
+        final IsCreationTool         localTestTarget      = new IsCreationTool(this.mockLogger);
         final Stage                  mockStage            = Mockito.mock(Stage.class);
         final KmgReflectionModelImpl localReflectionModel = new KmgReflectionModelImpl(localTestTarget);
         localReflectionModel.set("springContext", this.mockSpringContext);
@@ -1061,8 +1053,15 @@ public class IsCreationToolTest extends ApplicationTest {
         Mockito.when(this.mockMessageSource.getLogMessage(ArgumentMatchers.any(), ArgumentMatchers.any()))
             .thenReturn(expectedErrorMessage);
 
-        /* テスト対象の実行 */
-        localTestTarget.start(mockStage);
+        /* テスト対象の実行: loadFxml()をstaticモックでIOExceptionを投げるようにスタブ */
+        try (MockedStatic<IsCreationTool> mockedLoadFxml = Mockito.mockStatic(IsCreationTool.class)) {
+
+            mockedLoadFxml.when(() -> IsCreationTool.loadFxml(ArgumentMatchers.any(FXMLLoader.class)))
+                .thenThrow(new IOException("FXML load failed for test"));
+
+            localTestTarget.start(mockStage);
+
+        }
 
         /* 検証の準備 */
         Mockito.verify(this.mockLogger).error(ArgumentMatchers.contains(expectedErrorMessage),
