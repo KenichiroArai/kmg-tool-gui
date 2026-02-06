@@ -37,7 +37,7 @@ import kmg.tool.gui.cmn.presentation.ui.gui.stage.wrapper.FileChooserWrapper;
  *
  * @since 0.1.0
  *
- * @version 0.1.2
+ * @version 0.1.3
  */
 @Controller
 public class IsCreationController implements Initializable {
@@ -55,6 +55,13 @@ public class IsCreationController implements Initializable {
      * @since 0.1.0
      */
     private static final String DIRECTORY_CHOOSER_TITLE = "ディレクトリ選択"; //$NON-NLS-1$
+
+    /**
+     * ユーザーホームのシステムプロパティキー
+     *
+     * @since 0.1.3
+     */
+    private static final String USER_HOME_PROPERTY_KEY = "user.home"; //$NON-NLS-1$
 
     /**
      * ロガー
@@ -156,6 +163,42 @@ public class IsCreationController implements Initializable {
      */
     @FXML
     private Label lblProcTimeUnit;
+
+    /**
+     * ファイルチューザー用の初期ディレクトリを解決する。
+     *
+     * @since 0.1.3
+     *
+     * @param defaultFile
+     *                    デフォルトのファイル（親ディレクトリの候補）
+     *
+     * @return 初期ディレクトリとして使用するファイル。使用しない場合は null
+     */
+    private static File resolveInitialDirectoryForFileChooser(final File defaultFile) {
+
+        File result = null;
+
+        if (defaultFile == null) {
+
+            return result;
+
+        }
+
+        if (!defaultFile.exists()) {
+
+            return result;
+
+        }
+
+        if (!defaultFile.isDirectory()) {
+
+            return result;
+
+        }
+        result = defaultFile;
+        return result;
+
+    }
 
     /**
      * 標準ロガーを使用して入出力ツールを初期化するコンストラクタ<br>
@@ -272,7 +315,7 @@ public class IsCreationController implements Initializable {
 
         if (KmgString.isEmpty(defaultFilePath)) {
 
-            defaultFilePath = System.getProperty("user.home");
+            defaultFilePath = System.getProperty(IsCreationController.USER_HOME_PROPERTY_KEY);
 
         }
         File defaultFile = new File(defaultFilePath);
@@ -283,12 +326,14 @@ public class IsCreationController implements Initializable {
 
         }
 
-        // ディレクトリが存在し、かつディレクトリである場合のみ設定
-        if ((defaultFile != null) && defaultFile.exists() && defaultFile.isDirectory()) {
+        final File initialDir = IsCreationController.resolveInitialDirectoryForFileChooser(defaultFile);
 
-            this.fileChooserWrapper.setInitialDirectory(defaultFile);
+        if (initialDir != null) {
+
+            this.fileChooserWrapper.setInitialDirectory(initialDir);
 
         }
+
         final File file = this.fileChooserWrapper.showOpenDialog(null);
 
         if (file != null) {
@@ -315,7 +360,7 @@ public class IsCreationController implements Initializable {
 
         if (KmgString.isEmpty(defaultFilePath)) {
 
-            defaultFilePath = System.getProperty("user.home");
+            defaultFilePath = System.getProperty(IsCreationController.USER_HOME_PROPERTY_KEY);
 
         }
         File defaultFile = new File(defaultFilePath);
@@ -326,12 +371,14 @@ public class IsCreationController implements Initializable {
 
         }
 
-        // ディレクトリが存在し、かつディレクトリである場合のみ設定
-        if ((defaultFile != null) && defaultFile.exists() && defaultFile.isDirectory()) {
+        final File initialDir = IsCreationController.resolveInitialDirectoryForFileChooser(defaultFile);
 
-            this.directoryChooserWrapper.setInitialDirectory(defaultFile);
+        if (initialDir != null) {
+
+            this.directoryChooserWrapper.setInitialDirectory(initialDir);
 
         }
+
         final File file = this.directoryChooserWrapper.showDialog(null);
 
         if (file != null) {

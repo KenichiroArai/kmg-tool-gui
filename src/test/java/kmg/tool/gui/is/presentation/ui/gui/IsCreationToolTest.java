@@ -1,5 +1,6 @@
 package kmg.tool.gui.is.presentation.ui.gui;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -26,6 +27,7 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.ApplicationTest;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import kmg.core.infrastructure.model.impl.KmgReflectionModelImpl;
 import kmg.fund.infrastructure.context.KmgMessageSource;
@@ -38,7 +40,7 @@ import kmg.tool.gui.is.presentation.ui.gui.controller.IsCreationController;
  *
  * @since 0.1.0
  *
- * @version 0.1.1
+ * @version 0.1.3
  */
 @ExtendWith({
     MockitoExtension.class, ApplicationExtension.class
@@ -394,6 +396,9 @@ public class IsCreationToolTest extends ApplicationTest {
 
     /**
      * init メソッドのテスト - 正常系：初期化が正常に完了する場合
+     * <p>
+     * headless環境でもSpringApplicationBuilderの起動は可能なため、init()の全行をカバーする。
+     * </p>
      *
      * @since 0.1.0
      *
@@ -402,14 +407,6 @@ public class IsCreationToolTest extends ApplicationTest {
      */
     @Test
     public void testInit_normalSuccess() throws Exception {
-
-        // headless環境では実際のSpring初期化が困難なため、テストをスキップ
-        if (Boolean.getBoolean("java.awt.headless") || Boolean.getBoolean("testfx.headless")) {
-
-            Assertions.assertTrue(true, "headless環境ではSpringの完全な初期化が困難なためスキップ");
-            return;
-
-        }
 
         /* 期待値の定義 */
         final boolean expectedResult = true;
@@ -421,14 +418,18 @@ public class IsCreationToolTest extends ApplicationTest {
         localTestTarget.init();
 
         /* 検証の準備 */
-        final KmgReflectionModelImpl         localReflectionModel = new KmgReflectionModelImpl(localTestTarget);
-        final ConfigurableApplicationContext actualSpringContext
-                                                                  = (ConfigurableApplicationContext) localReflectionModel
-                .get("springContext");
-        final boolean                        actualResult         = (actualSpringContext != null);
+        final KmgReflectionModelImpl localReflectionModel = new KmgReflectionModelImpl(localTestTarget);
 
-        /* 検証の実施 */
-        Assertions.assertEquals(expectedResult, actualResult, "Springアプリケーションコンテキストが正しく初期化されていること");
+        try (ConfigurableApplicationContext actualSpringContext
+            = (ConfigurableApplicationContext) localReflectionModel.get("springContext")) {
+
+            final KmgMessageSource actualMessageSource = (KmgMessageSource) localReflectionModel.get("messageSource");
+            final boolean          actualResult        = (actualSpringContext != null) && (actualMessageSource != null);
+
+            /* 検証の実施 */
+            Assertions.assertEquals(expectedResult, actualResult, "Springアプリケーションコンテキストとメッセージソースが正しく初期化されていること");
+
+        }
 
     }
 
@@ -982,7 +983,7 @@ public class IsCreationToolTest extends ApplicationTest {
     }
 
     /**
-     * start メソッドのテスト - 異常系：FXMLファイルの読み込みに失敗する場合
+     * start メソッドのテスト - 異常系：FXMLファイルが見つからない場合（getFxmlUrl()がnullを返す）
      *
      * @since 0.1.0
      *
@@ -992,19 +993,21 @@ public class IsCreationToolTest extends ApplicationTest {
     @Test
     public void testStart_errorFxmlLoadFailure() throws Exception {
 
-        // headless環境では実際のJavaFX初期化が困難なため、テストをスキップ
-        if (Boolean.getBoolean("java.awt.headless") || Boolean.getBoolean("testfx.headless")) {
-
-            Assertions.assertTrue(true, "headless環境ではJavaFXの完全な初期化が困難なためスキップ");
-            return;
-
-        }
-
         /* 期待値の定義 */
         final String expectedErrorMessage = "エラーメッセージ";
 
-        /* 準備 */
-        final IsCreationTool         localTestTarget      = new IsCreationTool(this.mockLogger);
+        /* 準備: getFxmlUrl()がnullを返すサブクラスを使用 */
+        final IsCreationTool localTestTarget = new IsCreationTool(this.mockLogger) {
+
+            @Override
+            protected URL getFxmlUrl() {
+
+                final URL result = null;
+                return result;
+
+            }
+        };
+
         final Stage                  mockStage            = Mockito.mock(Stage.class);
         final KmgReflectionModelImpl localReflectionModel = new KmgReflectionModelImpl(localTestTarget);
         localReflectionModel.set("springContext", this.mockSpringContext);
@@ -1016,7 +1019,6 @@ public class IsCreationToolTest extends ApplicationTest {
         localTestTarget.start(mockStage);
 
         /* 検証の準備 */
-        // FXMLファイルが見つからない場合、エラーメッセージにパスが含まれることを確認
         Mockito.verify(this.mockLogger).error(ArgumentMatchers.contains(expectedErrorMessage));
         final boolean actualResult = true;
 
@@ -1028,8 +1030,7 @@ public class IsCreationToolTest extends ApplicationTest {
     /**
      * start メソッドのテスト - 異常系：FXMLファイルの読み込み時にIOExceptionが発生する場合
      * <p>
-     * 注：FXMLLoaderのモックが困難なため、このテストは実装が困難です。 実際のFXMLファイルが存在しない場合や、FXMLファイルが破損している場合にIOExceptionが発生しますが、
-     * これらのケースは統合テストで確認することを推奨します。
+     * MockedStaticでloadFxml()がIOExceptionを投げるようにスタブし、catch分岐をカバーする。
      * </p>
      *
      * @since 0.1.1
@@ -1040,30 +1041,35 @@ public class IsCreationToolTest extends ApplicationTest {
     @Test
     public void testStart_errorIOException() throws Exception {
 
-        // headless環境では実際のJavaFX初期化が困難なため、テストをスキップ
-        if (Boolean.getBoolean("java.awt.headless") || Boolean.getBoolean("testfx.headless")) {
+        /* 期待値の定義 */
+        final String expectedErrorMessage = "IOExceptionメッセージ";
 
-            Assertions.assertTrue(true, "headless環境ではJavaFXの完全な初期化が困難なためスキップ");
-            return;
+        /* 準備 */
+        final IsCreationTool         localTestTarget      = new IsCreationTool(this.mockLogger);
+        final Stage                  mockStage            = Mockito.mock(Stage.class);
+        final KmgReflectionModelImpl localReflectionModel = new KmgReflectionModelImpl(localTestTarget);
+        localReflectionModel.set("springContext", this.mockSpringContext);
+        localReflectionModel.set("messageSource", this.mockMessageSource);
+        Mockito.when(this.mockMessageSource.getLogMessage(ArgumentMatchers.any(), ArgumentMatchers.any()))
+            .thenReturn(expectedErrorMessage);
+
+        /* テスト対象の実行: loadFxml()をstaticモックでIOExceptionを投げるようにスタブ */
+        try (MockedStatic<IsCreationTool> mockedLoadFxml = Mockito.mockStatic(IsCreationTool.class)) {
+
+            mockedLoadFxml.when(() -> IsCreationTool.loadFxml(ArgumentMatchers.any(FXMLLoader.class)))
+                .thenThrow(new IOException("FXML load failed for test"));
+
+            localTestTarget.start(mockStage);
 
         }
 
-        /* 期待値の定義 */
-        // FXMLLoaderのモックが困難なため、このテストはスキップ
-        // 実際のFXMLファイルが存在しない場合や、FXMLファイルが破損している場合にIOExceptionが発生しますが、
-        // これらのケースは統合テストで確認することを推奨します。
-
-        /* 準備 */
-        // 準備は不要
-
-        /* テスト対象の実行 */
-        // テスト対象の実行は不要
-
         /* 検証の準備 */
+        Mockito.verify(this.mockLogger).error(ArgumentMatchers.contains(expectedErrorMessage),
+            ArgumentMatchers.any(IOException.class));
         final boolean actualResult = true;
 
         /* 検証の実施 */
-        Assertions.assertTrue(actualResult, "FXMLLoaderのモックが困難なため、このテストはスキップします。統合テストで確認してください。");
+        Assertions.assertTrue(actualResult, "FXMLのIOException時にエラーログが出力されること");
 
     }
 
@@ -1077,14 +1083,6 @@ public class IsCreationToolTest extends ApplicationTest {
      */
     @Test
     public void testStart_normalCompleteCoverage() throws Exception {
-
-        // headless環境では実際のJavaFX初期化が困難なため、テストをスキップ
-        if (Boolean.getBoolean("java.awt.headless") || Boolean.getBoolean("testfx.headless")) {
-
-            Assertions.assertTrue(true, "headless環境ではJavaFXの完全な初期化が困難なためスキップ");
-            return;
-
-        }
 
         /* 期待値の定義 */
         final String expectedStageTitle = "挿入SQL作成画面";
@@ -1132,14 +1130,6 @@ public class IsCreationToolTest extends ApplicationTest {
      */
     @Test
     public void testStart_normalFxmlLoadSuccess() throws Exception {
-
-        // headless環境では実際のJavaFX初期化が困難なため、テストをスキップ
-        if (Boolean.getBoolean("java.awt.headless") || Boolean.getBoolean("testfx.headless")) {
-
-            Assertions.assertTrue(true, "headless環境ではJavaFXの完全な初期化が困難なためスキップ");
-            return;
-
-        }
 
         /* 期待値の定義 */
         final String expectedStageTitle = "挿入SQL作成画面";

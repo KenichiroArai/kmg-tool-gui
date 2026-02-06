@@ -6,13 +6,13 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.1</version>
+        <version>4.0.2</version>
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
 
     <groupId>kmg.tool.gui</groupId>
     <artifactId>kmg-tool-gui</artifactId>
-    <version>0.1.2</version>
+    <version>0.1.3</version>
     <name>kmg-tool-gui</name>
     <description>KMGツールGUI</description>
     <packaging>jar</packaging>
@@ -41,7 +41,7 @@
         <dependency>
             <groupId>kmg.javafx</groupId>
             <artifactId>kmg-javafx</artifactId>
-            <version>0.1.1</version>
+            <version>0.1.2</version>
         </dependency>
         <dependency>
             <groupId>kmg.tool.base</groupId>
