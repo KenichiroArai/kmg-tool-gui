@@ -1,16 +1,23 @@
 # KMG ツール GUI（kmg-tool-gui）
 
-[![Java](https://img.shields.io/badge/Java-21-orange.svg)](https://www.oracle.com/java/)
-[![JavaFX](https://img.shields.io/badge/JavaFX-21-blue.svg)](https://openjfx.io/)
+[![Java](https://img.shields.io/badge/Java-25-orange.svg)](https://www.oracle.com/java/)
+[![JavaFX](https://img.shields.io/badge/JavaFX-21.0.2-blue.svg)](https://openjfx.io/)
 [![Maven](https://img.shields.io/badge/Maven-3.6+-blue.svg)](https://maven.apache.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen.svg)](https://github.com/your-username/kmg-tool-gui)
+[![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen.svg)](https://github.com/KenichiroArai/kmg-tool-gui)
 
 KMG ツール GUI は、Java 開発における様々な自動化処理を提供する JavaFX ベースの GUI ツール集です。
 
 ## 概要
 
 KMG ツール GUI は、Java 開発の効率化を目的として開発された GUI ツール群です。直感的なグラフィカルユーザーインターフェースを通じて、データベース開発や SQL 生成などの作業を効率化します。
+
+## バージョン
+
+- アーティファクトID: `kmg-tool-gui`
+- 現在バージョン: `0.2.0`
+- 利用 Java バージョン: `25`
+- 利用 JavaFX バージョン: `21.0.2`
 
 ## ドキュメント
 
@@ -74,8 +81,8 @@ kmg-tool-gui/
 
 ### 前提条件
 
-- Java 21 以上
-- JavaFX 21 以上
+- Java 25 以上
+- JavaFX 21.0.2 以降
 - Maven 3.6 以上
 
 ### インストール
@@ -102,8 +109,10 @@ kmg-tool-gui/
 mvn javafx:run
 
 # または
-mvn exec:java -Dexec.mainClass="kmg.tool.gui.is.presentation.ui.gui.IsCreationTool"
+mvn exec:java -Dexec.mainClass="kmg.tool.gui.presentation.ui.gui.is.InsertionSqlCreationTool"
 ```
+
+実行されるメインクラスは `kmg.tool.gui.presentation.ui.gui.is.InsertionSqlCreationTool` です。
 
 詳細な使用方法については、[docs/操作手順書/](docs/操作手順書/) を参照してください。
 
